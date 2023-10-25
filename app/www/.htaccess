@@ -1,0 +1,3 @@
+# Autoriser tout le monde
+Order allow,deny
+Allow from all

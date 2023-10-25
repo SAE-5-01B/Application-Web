@@ -40,7 +40,7 @@ services:
           docker-php-ext-install ldap
     container_name: ldap_web_portal_container
     volumes:
-      - ./www:/var/www/html
+      - ./../app:/var/www/html
     ports:
       - "8080:80"
     networks:
