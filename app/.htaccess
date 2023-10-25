@@ -1,3 +1,0 @@
-# Bloquer tout le monde
-Order deny,allow
-Deny from all
