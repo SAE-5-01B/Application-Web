@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  ldap:
+    image: osixia/openldap
+    container_name: ldap_server_container
+    environment:
+      LDAP_ORGANISATION: "Mon Organisation"
+      LDAP_DOMAIN: "mondomaine.local"
+      LDAP_ADMIN_PASSWORD: "adminpassword"
+    ports:
+      - "389:389"
+    volumes:
+      - ./data/ldap_data:/var/lib/ldap
+      - ./data/ldap_config:/etc/ldap/slapd.d
+      - ./data/nouveauContenu.ldif:/nouveauContenu.ldif
+    networks:
+      - ldap_network
+
+  phpldapadmin:
+    image: osixia/phpldapadmin
+    container_name: ldap_phpldapadmin_container
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: ldap
+      PHPLDAPADMIN_HTTPS: 0
+    ports:
+      - "6443:80"
+    depends_on:
+      - ldap
+    networks:
+      - ldap_network
+
+  web:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM php:apache
+        RUN apt-get update && apt-get install -y libldap2-dev && \
+          docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
+          docker-php-ext-install ldap
+    container_name: ldap_web_portal_container
+    volumes:
+      - ./www:/var/www/html
+    ports:
+      - "8080:80"
+    networks:
+      - ldap_network
+    environment:
+      - LDAP_SERVER=internal
+
+networks:
+  ldap_network:
+    driver: bridge
