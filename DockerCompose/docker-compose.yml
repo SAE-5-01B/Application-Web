@@ -37,16 +37,29 @@ services:
         FROM php:apache
         RUN apt-get update && apt-get install -y libldap2-dev && \
           docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
-          docker-php-ext-install ldap
+          docker-php-ext-install ldap && \
+          a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb
+        COPY ./Certificats/myserver.crt /etc/ssl/certs/myserver.crt
+        COPY ./Certificats/myserver.key /etc/ssl/private/myserver.key
+        COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+        COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
+
     container_name: ldap_web_portal_container
     volumes:
       - ./../app:/var/www/html
+      - ./Certificats/myserver.crt:/etc/ssl/certs/myserver.crt
+      - ./Certificats/myserver.key:/etc/ssl/private/myserver.key
+      - ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
+      - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
     ports:
       - "8080:80"
+      - "8443:443"
     networks:
       - ldap_network
     environment:
       - LDAP_SERVER=internal
+    extra_hosts:
+      - "ldap:172.27.0.2"
 
 networks:
   ldap_network:
