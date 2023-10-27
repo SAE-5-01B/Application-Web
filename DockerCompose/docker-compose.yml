@@ -43,6 +43,7 @@ services:
         COPY ./Certificats/myserver.key /etc/ssl/private/myserver.key
         COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
         COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
+        COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
 
     container_name: ldap_web_portal_container
     volumes:
@@ -51,6 +52,7 @@ services:
       - ./Certificats/myserver.key:/etc/ssl/private/myserver.key
       - ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
       - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
+      - ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
     ports:
       - "8080:80"
       - "8443:443"
