@@ -70,3 +70,48 @@ button:hover {
     background-color: #0056b3;
 }
 
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-group button {
+    flex-basis: calc(50% - 5px); /* Calculer 50% de la largeur moins 5px de marge */
+    margin-right: 5px; /* Ajouter une marge à droite du premier bouton */
+}
+
+.button-group button:last-child {
+    margin-right: 0; /* Enlever la marge du deuxième bouton */
+}
+
+
+#infoPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    width: 80vw;  /* Utiliser une largeur relative pour s'adapter à différentes tailles d'écran */
+    max-width: 500px;  /* Fixer une largeur maximale */
+    padding: 30px;  /* Plus d'espace intérieur pour la respiration */
+    border-radius: 10px;  /* Bords arrondis pour une esthétique plus douce */
+    line-height: 1.5;  /* Espacement vertical du texte pour une meilleure lisibilité */
+}
+
+#infoPopup h2 {
+    margin-bottom: 20px;  /* Espacement après le titre */
+    text-align: center;  /* Centrer le titre */
+}
+
+#infoPopup p {
+    margin-bottom: 20px;  /* Espacement entre les paragraphes */
+}
+
+#infoPopup button {
+    display: block;  /* Faire du bouton un élément de bloc */
+    margin: 20px auto 0;  /* Centrer le bouton et ajouter de l'espace au-dessus */
+}
