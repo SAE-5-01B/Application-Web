@@ -18,7 +18,7 @@
 
     <?php
     if (isset($_SESSION['error'])) {
-        echo "<p class='error-message'>" . $_SESSION['error'] . "</p>";
+        echo "<p id='message_erreur'>" . $_SESSION['error'] . "</p>";
         unset($_SESSION['error']);
     }
     ?>
