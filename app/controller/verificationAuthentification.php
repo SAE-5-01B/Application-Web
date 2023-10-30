@@ -8,7 +8,17 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     $userDetails = authentificationAuLDAP($username, $password);
     if($userDetails){
         $_SESSION['userDetails'] = $userDetails;
-        header('Location: ./../view/acceuilUtilisateur/acceuil.php');
+        //Regarder si l'utilisateur est un admin
+        if(isAdmin($username)){
+            $_SESSION['isAdmin'] = true;
+            echo "Admin";
+        }
+        else {
+            $_SESSION['isAdmin'] = false;
+            echo "Pas admin";
+
+        }
+        //header('Location: ./../view/acceuilUtilisateur/acceuil.php');
         exit();
     }
     else {

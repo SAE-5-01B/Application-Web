@@ -42,25 +42,15 @@ function isAdmin($username) {
     if ($ldap_conn) {
         // Se connecter d'abord avec un compte de service/administrateur
         if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {
-            // Chercher le DN de l'utilisateur en utilisant l'attribut uid
+            // Recherche de l'utilisateur par son uid
             $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . $username . ")");
-            if ($search) {
-                $entries = ldap_get_entries($ldap_conn, $search);
-                if ($entries["count"] > 0) {
-                    $userdn = $entries[0]["dn"];
-                    // Vérifier si l'utilisateur est un membre du groupe "Administrateurs"
-                    $searchGroup = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(&(objectClass=groupOfNames)(member=" . $userdn . ")(cn=Administrateurs))");
-                    $groupEntries = ldap_get_entries($ldap_conn, $searchGroup);
-                    if ($groupEntries["count"] > 0) {
-                        return true; // L'utilisateur est un administrateur
-                    } else {
-                        return false; // L'utilisateur n'est pas un administrateur
-                    }
-                } else {
-                    return false; // L'utilisateur n'a pas été trouvé
-                }
+            $entries = ldap_get_entries($ldap_conn, $search);
+
+            // Vérifie si l'utilisateur a été trouvé et si son DN est dans le groupe "Administrateurs"
+            if ($entries["count"] > 0 && strpos($entries[0]["dn"], "cn=Administrateurs,dc=mondomaine,dc=local") !== false) {
+                return true; // L'utilisateur est un administrateur
             } else {
-                return false; // La recherche LDAP a échoué
+                return false; // L'utilisateur n'est pas un administrateur
             }
         } else {
             return false; // Connexion avec le compte admin échouée
@@ -69,4 +59,6 @@ function isAdmin($username) {
         return false; // Connexion LDAP échouée
     }
 }
+
+
 ?>
