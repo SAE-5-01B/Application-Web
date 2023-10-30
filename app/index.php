@@ -1,3 +1,3 @@
 <?php
-header('Location: ./view/Authentification/formulaireAuthentification.php');
+header('Location: ./view/portail-connexion/formulaireAuthentification.php');
 ?>

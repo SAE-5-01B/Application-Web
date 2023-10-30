@@ -7,7 +7,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
         echo "Connexion réussie";
     }else{
         $_SESSION['error'] = "Connexion échouée";
-        header('Location: ./../view/Authentification/formulaireAuthentification.php');
+        header('Location: ./../view/portail-connexion/formulaireAuthentification.php');
         exit();
     }
 
