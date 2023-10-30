@@ -45,7 +45,7 @@
 
     <div class="button-group">
         <button onclick="toggleInfoPopup()">Informations</button>
-        <a href="envoieMail.html" target="_blank"><button>Nous contacter</button></a>
+        <a href="formulaireEnvoieMail.html"><button>Nous contacter</button></a>
     </div>
 
 </div>
