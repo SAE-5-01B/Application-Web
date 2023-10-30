@@ -11,14 +11,12 @@ if(isset($_POST['username']) && isset($_POST['password'])){
         //Regarder si l'utilisateur est un admin
         if(isAdmin($username)){
             $_SESSION['isAdmin'] = true;
-            echo "Admin";
         }
         else {
             $_SESSION['isAdmin'] = false;
-            echo "Pas admin";
 
         }
-        //header('Location: ./../view/acceuilUtilisateur/acceuil.php');
+        header('Location: ./../view/acceuilUtilisateur/acceuil.php');
         exit();
     }
     else {
