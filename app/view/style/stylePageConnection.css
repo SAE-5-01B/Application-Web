@@ -95,23 +95,23 @@ button:hover {
     background-color: #ffffff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    width: 80vw;  /* Utiliser une largeur relative pour s'adapter à différentes tailles d'écran */
-    max-width: 500px;  /* Fixer une largeur maximale */
-    padding: 30px;  /* Plus d'espace intérieur pour la respiration */
-    border-radius: 10px;  /* Bords arrondis pour une esthétique plus douce */
-    line-height: 1.5;  /* Espacement vertical du texte pour une meilleure lisibilité */
+    width: 80vw;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 10px;
+    line-height: 1.5;
 }
 
 #infoPopup h2 {
-    margin-bottom: 20px;  /* Espacement après le titre */
-    text-align: center;  /* Centrer le titre */
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 #infoPopup p {
-    margin-bottom: 20px;  /* Espacement entre les paragraphes */
+    margin-bottom: 20px;
 }
 
 #infoPopup button {
-    display: block;  /* Faire du bouton un élément de bloc */
-    margin: 20px auto 0;  /* Centrer le bouton et ajouter de l'espace au-dessus */
+    display: block;
+    margin: 20px auto 0;
 }
