@@ -1,5 +1,5 @@
 <?php
-require "./../model/connectionLDAPS.php";
+require "./../model/LDAPS/connectionLDAPS.php";
 
 // Connexion au LDAPS
 $ldap_conn = connectionLDAPS::getInstance()->getConnection();
@@ -14,7 +14,6 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     // Authentification
     $username = $_POST['username'];
     $password = $_POST['password'];
-
     if ($ldap_conn) {
         $ldaprdn = "cn=" . $username . ",cn=Groupe G3,dc=mondomaine,dc=local";
         // Connexion LDAP avec l'identifiant et le mot de passe de l'utilisateur
@@ -26,7 +25,6 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     } else {
         $message = "Connexion LDAP échouée...";
     }
-
     echo $message;
 }
 ?>
