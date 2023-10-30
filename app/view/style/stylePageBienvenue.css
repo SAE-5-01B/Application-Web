@@ -1,0 +1,52 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50; /* Une couleur foncée pour le titre pour un contraste avec le fond clair */
+}
+
+p {
+    text-align: center;
+    color: #7f8c8d; /* Une couleur grise douce pour le texte */
+    font-size: 18px; /* Un peu plus grand pour une meilleure lisibilité */
+    max-width: 600px; /* Largeur maximale pour la lisibilité du texte */
+}
+
+.welcome-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Faire en sorte que la boîte s'adapte à différents écrans */
+    max-width: 500px; /* Largeur maximale pour des grands écrans */
+}
+
+/* Styles supplémentaires si vous ajoutez des boutons ou d'autres éléments */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espacement si vous ajoutez un bouton */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Si vous avez des images ou d'autres éléments à ajouter à l'avenir, vous pouvez ajouter plus de styles ici */

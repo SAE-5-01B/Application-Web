@@ -47,7 +47,6 @@ services:
       - ldap_network
     environment:
       - LDAP_SERVER=internal
-
 networks:
   ldap_network:
     driver: bridge
