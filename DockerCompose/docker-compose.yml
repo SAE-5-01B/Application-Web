@@ -17,6 +17,39 @@ services:
     networks:
       - ldap_network
 
+  ftp:
+    build:
+      context: .
+      dockerfile_inline: |
+          FROM stilliard/pure-ftpd
+          
+          COPY ./Configuration/FTP/pure-ftpd.conf /etc/pure-ftpd/pure-ftpd.conf
+          COPY ./Configuration/FTP/pureftpd-ldap.conf /etc/pure-ftpd/pureftpd-ldap.conf
+
+    container_name: ldap_ftp_container
+    environment:
+      FTP_USER_NAME: "exempleuser"
+      FTP_USER_PASS: "exemplepass"
+      FTP_USER_HOME: "/home/ftpusers/exempleuser"
+      LDAP_SERVER: "ldap://ldap"
+      LDAP_BASE_DN: "dc=mondomaine,dc=local"
+      LDAP_LOGIN_ATTRIBUTE: "uid"
+      LDAP_BIND_DN: "cn=admin,dc=mondomaine,dc=local"
+      LDAP_BIND_PW: "adminpassword"
+
+    ports:
+        - "21:21"
+        - "30000-30009:30000-30009"
+    volumes:
+        - ./data/ftp_users:/home/ftpusers
+        - ./Configuration/FTP/pure-ftpd.conf:/etc/pure-ftpd/pure-ftpd.conf
+        - ./Configuration/FTP/pureftpd-ldap.conf:/etc/pure-ftpd/pureftpd-ldap.conf
+
+    networks:
+        - ldap_network
+    depends_on:
+      - ldap
+
   phpldapadmin:
     image: osixia/phpldapadmin
     container_name: ldap_phpldapadmin_container
@@ -45,8 +78,6 @@ services:
       - "8080:80"
     networks:
       - ldap_network
-    environment:
-      - LDAP_SERVER=internal
 networks:
   ldap_network:
     driver: bridge
