@@ -25,6 +25,11 @@ services:
           
           COPY ./Configuration/FTP/pure-ftpd.conf /etc/pure-ftpd/pure-ftpd.conf
           COPY ./Configuration/FTP/pureftpd-ldap.conf /etc/pure-ftpd/pureftpd-ldap.conf
+          COPY ./Configuration/FTP/run.sh /run.sh
+          
+          RUN chmod 755 /etc/pure-ftpd/pure-ftpd.conf
+          RUN chmod 755 /etc/pure-ftpd/pureftpd-ldap.conf
+          RUN chmod 755 /run.sh
 
     container_name: ldap_ftp_container
     environment:
@@ -40,6 +45,7 @@ services:
         - ./data/ftp_users:/home/ftpusers
         - ./Configuration/FTP/pure-ftpd.conf:/etc/pure-ftpd/pure-ftpd.conf
         - ./Configuration/FTP/pureftpd-ldap.conf:/etc/pure-ftpd/pureftpd-ldap.conf
+        - ./Configuration/FTP/run.sh:/run.sh
 
     networks:
         - ldap_network
