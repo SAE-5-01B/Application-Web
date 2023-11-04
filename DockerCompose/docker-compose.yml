@@ -28,15 +28,11 @@ services:
 
     container_name: ldap_ftp_container
     environment:
-      FTP_USER_NAME: "exempleuser"
-      FTP_USER_PASS: "exemplepass"
-      FTP_USER_HOME: "/home/ftpusers/exempleuser"
       LDAP_SERVER: "ldap://ldap"
       LDAP_BASE_DN: "dc=mondomaine,dc=local"
       LDAP_LOGIN_ATTRIBUTE: "uid"
       LDAP_BIND_DN: "cn=admin,dc=mondomaine,dc=local"
       LDAP_BIND_PW: "adminpassword"
-
     ports:
         - "21:21"
         - "30000-30009:30000-30009"
