@@ -17,41 +17,6 @@ services:
     networks:
       - ldap_network
 
-  ftp:
-    build:
-      context: .
-      dockerfile_inline: |
-          FROM stilliard/pure-ftpd
-          
-          COPY ./Configuration/FTP/pure-ftpd.conf /etc/pure-ftpd/pure-ftpd.conf
-          COPY ./Configuration/FTP/pureftpd-ldap.conf /etc/pure-ftpd/pureftpd-ldap.conf
-          COPY ./Configuration/FTP/run.sh /run.sh
-          
-          RUN chmod 755 /etc/pure-ftpd/pure-ftpd.conf
-          RUN chmod 755 /etc/pure-ftpd/pureftpd-ldap.conf
-          RUN chmod 755 /run.sh
-
-    container_name: ldap_ftp_container
-    environment:
-      LDAP_SERVER: "ldap://ldap"
-      LDAP_BASE_DN: "dc=mondomaine,dc=local"
-      LDAP_LOGIN_ATTRIBUTE: "uid"
-      LDAP_BIND_DN: "cn=admin,dc=mondomaine,dc=local"
-      LDAP_BIND_PW: "adminpassword"
-    ports:
-        - "21:21"
-        - "30000-30009:30000-30009"
-    volumes:
-        - ./data/ftp_users:/home/ftpusers
-        - ./Configuration/FTP/pure-ftpd.conf:/etc/pure-ftpd/pure-ftpd.conf
-        - ./Configuration/FTP/pureftpd-ldap.conf:/etc/pure-ftpd/pureftpd-ldap.conf
-        - ./Configuration/FTP/run.sh:/run.sh
-
-    networks:
-        - ldap_network
-    depends_on:
-      - ldap
-
   phpldapadmin:
     image: osixia/phpldapadmin
     container_name: ldap_phpldapadmin_container
@@ -70,16 +35,42 @@ services:
       context: .
       dockerfile_inline: |
         FROM php:apache
+        COPY ./Certificats/localhost.crt /etc/ssl/certs/localhost.crt
+        COPY ./Certificats/localhost.key /etc/ssl/private/localhost.key
+        
+        COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+        COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
+        COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
+        
         RUN apt-get update && apt-get install -y libldap2-dev && \
           docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
-          docker-php-ext-install ldap
+          docker-php-ext-install ldap && \
+          a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
+            && service apache2 restart
+
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        rm -f /etc/apache2/sites-available/000-default.conf
+        apachectl -D FOREGROUND
     container_name: ldap_web_portal_container
     volumes:
       - ./../app:/var/www/html
+      - ./Certificats/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./Certificats/localhost.key:/etc/ssl/private/localhost.key
+      - ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
+      - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
+      - ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
     ports:
       - "8080:80"
+      - "8443:443"
     networks:
       - ldap_network
+    environment:
+      - LDAP_SERVER=internal
+    extra_hosts:
+      - "ldap:172.27.0.2"
 networks:
   ldap_network:
     driver: bridge
