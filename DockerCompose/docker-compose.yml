@@ -47,7 +47,6 @@ services:
           docker-php-ext-install ldap && \
           a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
             && service apache2 restart
-
     entrypoint:
       - /bin/bash
       - -c

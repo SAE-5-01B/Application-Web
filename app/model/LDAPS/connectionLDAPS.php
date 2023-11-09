@@ -1,12 +1,10 @@
 <?php
-
 class connectionLDAPS
 {
     private static $instance = null;
     private $ldap_conn;
     // Paramètres de la connexion LDAP pour Docker
     private $ldap_host_port = "ldap://ldap:389";
-
     private function __construct()
     {
         $this->ldap_conn = ldap_connect($this->ldap_host_port);
@@ -20,11 +18,9 @@ class connectionLDAPS
         }
         return self::$instance;
     }
-
     public function getConnection()
     {
         return $this->ldap_conn;
     }
 }
-
 ?>
