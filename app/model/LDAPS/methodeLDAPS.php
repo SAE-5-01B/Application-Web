@@ -10,7 +10,6 @@ function authentificationAuLDAP($username, $password){
     $ldap_conn = connectionLDAPS::getInstance()->getConnection();
     if ($ldap_conn) {
         if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {
-            echo "Connexion réussie avec le compte admin";
             $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . $username . ")");
             if ($search) {
                 $entries = ldap_get_entries($ldap_conn, $search);

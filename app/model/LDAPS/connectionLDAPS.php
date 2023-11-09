@@ -4,10 +4,12 @@ class connectionLDAPS
     private static $instance = null;
     private $ldap_conn;
     // Paramètres de la connexion LDAP pour Docker
-    private $ldap_host_port = "ldap://ldap:389";
+
     private function __construct()
     {
-        $this->ldap_conn = ldap_connect($this->ldap_host_port);
+
+        $this->ldap_conn = ldap_connect("ldap", 389) or die("Could not connect to LDAP server.");
+
         ldap_set_option($this->ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
     }
 

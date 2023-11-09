@@ -62,14 +62,9 @@ services:
       - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
       - ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
     ports:
-      - "8080:80"
       - "8443:443"
     networks:
       - ldap_network
-    environment:
-      - LDAP_SERVER=internal
-    extra_hosts:
-      - "ldap:172.27.0.2"
 networks:
   ldap_network:
     driver: bridge
