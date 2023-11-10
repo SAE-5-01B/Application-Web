@@ -21,6 +21,7 @@ Informations que je peux avoir sur l'utilisateur:
 [9]=> string(11) "objectclass" ["count"]=> int(10) ["dn"]=> string(58) "cn=Gaëtan Gonfiantini,cn=Groupe G3,dc=mondomaine,dc=local" }
  */
 
+//OHHHHH
 ?>
 
 
