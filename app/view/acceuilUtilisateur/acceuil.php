@@ -1,6 +1,5 @@
 <?php session_start();
 if (!isset($_SESSION['userDetails'])) {
-    echo "Coucou";
     header('Location: ./../view/portail-connexion/formulaireAuthentification.php');
     exit();
 }
@@ -16,8 +15,12 @@ $displayName = isset($userDetails['cn']) ? $userDetails['cn'][0] : "Utilisateur"
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./../style/stylePageBienvenue.css">
     <title>Espace Miaou</title>
+
 </head>
 <body>
+    <nav class="navbar">
+        <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
+    </nav>
 <h1>Bonjour, <?php echo $displayName; ?>!</h1>
 <p>Bienvenue sur votre espace Miaou. Utilisez les liens ci-dessous pour naviguer.</p>
 
