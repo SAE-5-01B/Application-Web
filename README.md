@@ -2,7 +2,23 @@
 
 ## Description
 
-Cette application 
+Cette application possède un seveur web qui permet d'authentifier une personne grâce au service LDAP.
+
+Dès que la personne est authentifiée, elle peut accéder à la page d'accueil qui lui permet de voir les informations de son compte LDAP ainsi 
+que les différents services dont il a accès.
+
+Selon les privilèges de l'utilisateur, il peut accéder à certains services.
+
+Les utilisateurs clients ont accès à :
+
+- Accès à sa base de données. 
+- Accès à "nextcloud" qui est un service de stockage de fichiers en ligne.
+
+Les utilisateurs administrateurs ont accès à :
+
+- Accès à sa base de données.
+- Accès à "nextcloud" qui est un service de stockage de fichiers en ligne.
+- Accès à "phpldammin" qui est un service de gestion de base de données LDAP.
 
 ## Guide utilisateur    
 
