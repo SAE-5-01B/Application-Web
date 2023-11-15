@@ -31,7 +31,21 @@ $displayName = isset($userDetails['cn']) ? $userDetails['cn'][0] : "Utilisateur"
 
         <div class="container">
             <h1>Vos services</h1>
-            <p>Lien n°1</p>
+            <div id="lesServices">
+                <div>
+                    <img alt="Ceci est le service n°1" src=""/>
+                    <p>Service n°1</p>
+                </div>
+                <div>
+                    <img alt="Ceci est le service n°2" src=""/>
+                    <p>Service n°2</p>
+                </div>
+                <div>
+                    <img alt="Ceci est le service n°3" src=""/>
+                    <p>Service n°1</p>
+                </div>
+
+            </div>
         </div>
 
     </div>
