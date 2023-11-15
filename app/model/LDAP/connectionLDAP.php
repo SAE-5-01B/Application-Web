@@ -1,5 +1,5 @@
 <?php
-class connectionLDAPS
+class connectionLDAP
 {
     private static $instance = null;
     private $ldap_conn;
@@ -16,7 +16,7 @@ class connectionLDAPS
     public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new connectionLDAPS();
+            self::$instance = new connectionLDAP();
         }
         return self::$instance;
     }

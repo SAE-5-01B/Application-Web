@@ -1,5 +1,5 @@
 <?php
-require "connectionLDAPS.php";
+require "connectionLDAP.php";
 /**
  * Cette fonction permet d'autentifier un utilisateur au LDAP
  * @param string $username
@@ -7,7 +7,7 @@ require "connectionLDAPS.php";
  * @return boolean
  */
 function authentificationAuLDAP($username, $password){
-    $ldap_conn = connectionLDAPS::getInstance()->getConnection();
+    $ldap_conn = connectionLDAP::getInstance()->getConnection();
     if ($ldap_conn) {
         if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {
             $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . $username . ")");
@@ -38,7 +38,7 @@ function authentificationAuLDAP($username, $password){
  * Cette fonction permet de vérifier si un utilisateur est un administrateur
  */
 function isAdmin($username) {
-    $ldap_conn = connectionLDAPS::getInstance()->getConnection();
+    $ldap_conn = connectionLDAP::getInstance()->getConnection();
     if ($ldap_conn) {
         // Se connecter d'abord avec un compte de service/administrateur
         if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {

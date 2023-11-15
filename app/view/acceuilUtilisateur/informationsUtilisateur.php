@@ -37,23 +37,27 @@ Informations que je peux avoir sur l'utilisateur:
     </nav>
 </div>
 
-<div class="welcome-container">
-    <h1>Informations de l'utilisateur</h1>
-    <?php
-    // Récupération des informations de l'utilisateur
-    $detailsUtilisateur = $_SESSION['userDetails'];
+<div id="contenuePage">
+    <div class="container">
+        <h1>Informations de l'utilisateur</h1>
+        <?php
+        // Récupération des informations de l'utilisateur
+        $detailsUtilisateur = $_SESSION['userDetails'];
 
-    // Affichage des informations
-    if ($detailsUtilisateur) {
-        echo "<p>Nom : " . htmlspecialchars($detailsUtilisateur['sn'][0]) . "</p>";
-        echo "<p>Prénom : " . htmlspecialchars($detailsUtilisateur['givenname'][0]) . "</p>";
-        echo "<p>Nom complet : " . htmlspecialchars($detailsUtilisateur['cn'][0]) . "</p>";
-        echo "<p>UID : " . htmlspecialchars($detailsUtilisateur['uid'][0]) . "</p>";
-        // Ajoutez plus d'informations selon les besoins
-    } else {
-        echo "<p>Aucune information disponible.</p>";
-    }
-    ?>
+        // Affichage des informations
+        if ($detailsUtilisateur) {
+            echo "<p>Nom : " . htmlspecialchars($detailsUtilisateur['sn'][0]) . "</p>";
+            echo "<p>Prénom : " . htmlspecialchars($detailsUtilisateur['givenname'][0]) . "</p>";
+            echo "<p>Nom complet : " . htmlspecialchars($detailsUtilisateur['cn'][0]) . "</p>";
+            echo "<p>UID : " . htmlspecialchars($detailsUtilisateur['uid'][0]) . "</p>";
+
+            echo "<p>Changez votre mot de passe</p>";
+        } else {
+            echo "<p>Aucune information disponible.</p>";
+        }
+        ?>
+    </div>
+
 </div>
 
 </body>

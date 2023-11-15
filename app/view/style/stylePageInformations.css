@@ -8,9 +8,8 @@ body {
     flex-direction: column;
 }
 
-#contenueDeLaPage{
+#contenuePage{
     margin-top: 100px;
-
 }
 
 h1 {
@@ -26,8 +25,7 @@ p {
     max-width: 600px; /* Largeur maximale pour la lisibilité du texte */
 }
 
-.welcome-container {
-    margin-top: 100px;
+.container {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
