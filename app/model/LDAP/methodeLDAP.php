@@ -60,5 +60,43 @@ function isAdmin($username) {
     }
 }
 
+/*
+ * Cette fonction permet de changer le mot de passe d'un utilisateur LDAP
+ */
+function passwordChange($username, $oldPassword, $newPassword) {
+    $ldap_conn = connectionLDAP::getInstance()->getConnection();
+    if ($ldap_conn) {
+        // Vérifiez que la base DN et le filtre de recherche sont corrects
+        $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . ldap_escape($username, "", LDAP_ESCAPE_FILTER) . ")");
+        if ($search === false) {
+            // La recherche a échoué
+            return false;
+        }
+
+        $entries = ldap_get_entries($ldap_conn, $search);
+        if ($entries === false || $entries["count"] === 0) {
+            // Pas d'entrées trouvées ou une erreur est survenue
+            return false;
+        }
+
+        $userDn = $entries[0]["dn"];
+
+        if (@ldap_bind($ldap_conn, $userDn, $oldPassword)) {
+            $newPasswordEncrypted = "{MD5}" . base64_encode(md5($newPassword, TRUE));
+            $entry = ["userpassword" => $newPasswordEncrypted];
+
+            if (ldap_modify($ldap_conn, $userDn, $entry)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 
 ?>
