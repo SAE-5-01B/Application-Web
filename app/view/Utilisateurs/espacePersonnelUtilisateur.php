@@ -13,13 +13,13 @@ $displayName = isset($userDetails['cn']) ? $userDetails['cn'][0] : "Utilisateur"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/stylePageAcceuil.css">
+    <link rel="stylesheet" href="../style/stylePagePersonnelUtilisateur.css">
     <link rel="stylesheet" href="./../style/styleBarreNavigation.css">
     <title>Espace Miaou</title>
 </head>
 <body>
     <nav class="navbar">
-        <a href="./acceuil.php" class="nav-link">Talbeau de bord</a>
+        <a href="espacePersonnelUtilisateur.php" class="nav-link">Talbeau de bord</a>
         <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
         <a href="./../../controller/deconnexion.php" class="nav-link">Se déconnecter</a>
     </nav>

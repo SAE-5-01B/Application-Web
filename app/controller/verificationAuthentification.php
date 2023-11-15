@@ -7,6 +7,8 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     $userDetails = authentificationAuLDAP($username, $password);
     if($userDetails){
         $_SESSION['userDetails'] = $userDetails;
+        //Mettre en variable de session le nom d'utilisateur
+        $_SESSION['username'] = $username;
         //Regarder si l'utilisateur est un admin
         if(isAdmin($username)){
             $_SESSION['isAdmin'] = true;

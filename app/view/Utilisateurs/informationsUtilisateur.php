@@ -24,14 +24,14 @@ Informations que je peux avoir sur l'utilisateur:
     <title>Informations de l'Utilisateur</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./../style/stylePageInformations.css">
+    <link rel="stylesheet" href="../style/stylePageInformationsUtilisateur.css">
     <link rel="stylesheet" href="./../style/styleBarreNavigation.css">
 
 </head>
 <body>
 <div class="navbar">
     <nav class="navbar">
-        <a href="./acceuil.php" class="nav-link">Talbeau de bord</a>
+        <a href="espacePersonnelUtilisateur.php" class="nav-link">Talbeau de bord</a>
         <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
         <a href="./../../controller/deconnexion.php" class="nav-link">Se déconnecter</a>
     </nav>
@@ -51,7 +51,9 @@ Informations que je peux avoir sur l'utilisateur:
             echo "<p>Nom complet : " . htmlspecialchars($detailsUtilisateur['cn'][0]) . "</p>";
             echo "<p>UID : " . htmlspecialchars($detailsUtilisateur['uid'][0]) . "</p>";
 
-            echo "<p>Changez votre mot de passe</p>";
+            echo "<form action='formulaireChangementMDPUtilisateur.php'>
+                <button type='submit'>Changez le mot de passe</button>
+                </form>";
         } else {
             echo "<p>Aucune information disponible.</p>";
         }
