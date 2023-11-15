@@ -1,9 +1,5 @@
 <?php
 session_start();
-//Récupération des informations de l'utilisateur
-
-$detailsUtilisateur = $_SESSION['userDetails'];
-var_dump($detailsUtilisateur);
 
 /*
 Informations que je peux avoir sur l'utilisateur:
@@ -20,8 +16,46 @@ Informations que je peux avoir sur l'utilisateur:
 [8]=> string(10) "loginshell" ["objectclass"]=> array(4) { ["count"]=> int(3) [0]=> string(13) "inetOrgPerson" [1]=> string(12) "posixAccount" [2]=> string(3) "top" }
 [9]=> string(11) "objectclass" ["count"]=> int(10) ["dn"]=> string(58) "cn=Gaëtan Gonfiantini,cn=Groupe G3,dc=mondomaine,dc=local" }
  */
-
-//OHHHHH
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Informations de l'Utilisateur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../style/stylePageInformations.css">
+    <link rel="stylesheet" href="./../style/styleBarreNavigation.css">
+
+</head>
+<body>
+<div class="navbar">
+    <nav class="navbar">
+        <a href="./acceuil.php" class="nav-link">Talbeau de bord</a>
+        <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
+        <a href="./../../controller/deconnexion.php" class="nav-link">Se déconnecter</a>
+    </nav>
+</div>
+
+<div class="welcome-container">
+    <h1>Informations de l'utilisateur</h1>
+    <?php
+    // Récupération des informations de l'utilisateur
+    $detailsUtilisateur = $_SESSION['userDetails'];
+
+    // Affichage des informations
+    if ($detailsUtilisateur) {
+        echo "<p>Nom : " . htmlspecialchars($detailsUtilisateur['sn'][0]) . "</p>";
+        echo "<p>Prénom : " . htmlspecialchars($detailsUtilisateur['givenname'][0]) . "</p>";
+        echo "<p>Nom complet : " . htmlspecialchars($detailsUtilisateur['cn'][0]) . "</p>";
+        echo "<p>UID : " . htmlspecialchars($detailsUtilisateur['uid'][0]) . "</p>";
+        // Ajoutez plus d'informations selon les besoins
+    } else {
+        echo "<p>Aucune information disponible.</p>";
+    }
+    ?>
+</div>
+
+</body>
+</html>
 
