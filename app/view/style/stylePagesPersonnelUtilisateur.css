@@ -7,7 +7,8 @@ body {
     margin: 0;
     flex-direction: column;
 }
-#contenuePage{
+
+#contenuePage {
     margin-top: 100px;
 }
 
@@ -16,6 +17,7 @@ h1 {
     margin-bottom: 20px;
     color: #2c3e50;
 }
+
 p {
     text-align: center;
     color: #7f8c8d;
@@ -32,13 +34,23 @@ p {
     max-width: 500px;
     margin-bottom: 50px;
 }
-#lesServices{
+
+#lesServicesUtilisateur {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-button{
+#lesServicesAdministrateurs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+button {
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -48,4 +60,14 @@ button{
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+#lesServicesUtilisateur img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+#lesServicesAdministrateurs img{
+
 }

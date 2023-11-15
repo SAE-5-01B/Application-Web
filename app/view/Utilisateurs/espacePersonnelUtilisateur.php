@@ -31,21 +31,30 @@ $displayName = isset($userDetails['cn']) ? $userDetails['cn'][0] : "Utilisateur"
 
         <div class="container">
             <h1>Vos services</h1>
-            <div id="lesServices">
+
+            <div id="lesServicesUtilisateur">
                 <div>
-                    <img alt="Ceci est le service n°1" src=""/>
-                    <p>Service n°1</p>
+                    <img alt="Ceci est le service n°1 qui est la base de données" src="./../images/base_de_donnees.png"/>
+                    <p>Base de données</p>
                 </div>
                 <div>
-                    <img alt="Ceci est le service n°2" src=""/>
-                    <p>Service n°2</p>
+                    <img alt="Ceci est le service n°2 qui est le service next cloud" src="./../images/nextCloud.png"/>
+                    <p>Next Cloud</p>
                 </div>
-                <div>
-                    <img alt="Ceci est le service n°3" src=""/>
-                    <p>Service n°1</p>
-                </div>
+            </div>
+            <div id="lesServicesAdministrateurs">
+                <!--Si l'utilisateur est un administrateur il a accès à phpLDAPAdmin -->
+                <?php
+                if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']){
+                    echo "<div>";
+                    echo "<img alt='Ceci est le service phpLDAPAdmin' src='./../images/phpldapAdmin.png'/>";
+                    echo "<p>phpLDAPAdmin</p>";
+                    echo "</div>";
+                }
+                ?>
 
             </div>
+
         </div>
 
     </div>
