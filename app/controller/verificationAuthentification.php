@@ -15,7 +15,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
             $_SESSION['isAdmin'] = false;
 
         }
-        header('Location: ./../view/acceuilUtilisateur/acceuil.php');
+        header('Location: ./../view/Utilisateurs/espacePersonnelUtilisateur.php');
         exit();
     }
     else {

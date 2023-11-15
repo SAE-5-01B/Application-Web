@@ -21,9 +21,20 @@ body {
     width: 300px;
 }
 h1 {
+    font-size: 25px;
     text-align: center;
     margin-bottom: 20px;
 }
+#titreMiaou{
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 30px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
 .input-group {
     margin-bottom: 20px;
 }
