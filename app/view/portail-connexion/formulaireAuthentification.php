@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page de Connexion</title>
-    <link rel="stylesheet" href="./../style/stylePageConnection.css">
+    <link rel="stylesheet" href="../style/stylePageConnexion.css">
     <script>
         // Fonction pour ouvrir et fermer le popup
         function toggleInfoPopup() {
@@ -20,7 +20,7 @@
 </head>
 <body>
 <div>
-    <h1>Bienvenue sur le portail Miaou</h1>
+    <h1 id="titreMiaou">Bienvenue sur le portail Miaou</h1>
 </div>
 <div class="login-container">
     <h1>Connectez-vous</h1>
