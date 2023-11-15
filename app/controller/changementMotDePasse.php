@@ -8,7 +8,6 @@ if(isset($_POST['username']) && isset($_POST['oldPassword']) && isset($_POST['ne
     $oldPassword = $_POST['oldPassword'];
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
-
     if($newPassword != $confirmPassword){
         $_SESSION['changementMotDePasse'] = "Les mots de passe ne correspondent pas";
     }

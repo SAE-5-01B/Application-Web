@@ -3,7 +3,6 @@ session_start();
 
 /*
 Informations que je peux avoir sur l'utilisateur:
-
  array(22) { ["givenname"]=> array(2) { ["count"]=> int(1) [0]=> string(7) "Gaëtan" }
 [0]=> string(9) "givenname" ["sn"]=> array(2) { ["count"]=> int(1) [0]=> string(11) "Gonfiantini" }
 [1]=> string(2) "sn" ["cn"]=> array(2) { ["count"]=> int(1) [0]=> string(19) "Gaëtan Gonfiantini" }
@@ -24,9 +23,8 @@ Informations que je peux avoir sur l'utilisateur:
     <title>Informations de l'Utilisateur</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/stylePageInformationsUtilisateur.css">
+    <link rel="stylesheet" href="../style/stylePagesPersonnelUtilisateur.css">
     <link rel="stylesheet" href="./../style/styleBarreNavigation.css">
-
 </head>
 <body>
 <div class="navbar">

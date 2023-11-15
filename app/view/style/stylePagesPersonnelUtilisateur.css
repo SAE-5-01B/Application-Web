@@ -7,7 +7,6 @@ body {
     margin: 0;
     flex-direction: column;
 }
-
 #contenuePage{
     margin-top: 100px;
 }
@@ -17,7 +16,6 @@ h1 {
     margin-bottom: 20px;
     color: #2c3e50;
 }
-
 p {
     text-align: center;
     color: #7f8c8d;
@@ -33,6 +31,11 @@ p {
     width: 90%;
     max-width: 500px;
     margin-bottom: 50px;
+}
+#lesServices{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 button{

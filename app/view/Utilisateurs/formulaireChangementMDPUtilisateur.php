@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Changement de Mot de Passe</title>
-    <link rel="stylesheet" type="text/css" href="./../style/stylePageInformationsUtilisateur.css">
+    <link rel="stylesheet" type="text/css" href="../style/stylePagesPersonnelUtilisateur.css">
     <link rel="stylesheet" href="./../style/styleBarreNavigation.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
         <h1>Changement de Mot de Passe</h1>
         <form action="./../../controller/changementMotDePasse.php" method="post">
             <p>
-                <label for="username">Nom d'utilisateur:</label><br>
+                <label for="username">Nom d'utilisateur :</label><br>
 
                 <?php
                 if(isset($_SESSION['username'])){
@@ -32,19 +32,19 @@
                 ?>
             </p>
             <p>
-                <label for="oldPassword">Ancien Mot de Passe:</label><br>
+                <label for="oldPassword">Ancien Mot de Passe :</label><br>
                 <input type="password" id="oldPassword" name="oldPassword" required>
             </p>
             <p>
-                <label for="newPassword">Nouveau Mot de Passe:</label><br>
+                <label for="newPassword">Nouveau Mot de Passe :</label><br>
                 <input type="password" id="newPassword" name="newPassword" required>
             </p>
             <p>
-                <label for="confirmPassword">Confirmez le Nouveau Mot de Passe:</label><br>
+                <label for="confirmPassword">Confirmez le Nouveau Mot de Passe :</label><br>
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
             </p>
             <p>
-                <input type="submit" value="Changer le Mot de Passe">
+                <button type="submit">Changer le Mot de Passe</button>
             </p>
         </form>
     </div>
