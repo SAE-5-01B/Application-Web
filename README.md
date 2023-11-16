@@ -2,10 +2,8 @@
 
 ## Description
 
-Cette application possède un seveur web qui permet d'authentifier une personne grâce au service LDAP.
-
-Dès que la personne est authentifiée, elle peut accéder à la page d'accueil qui lui permet de voir les informations de son compte LDAP ainsi 
-que les différents services dont il a accès.
+Cette application web intègre un serveur web sophistiqué conçu pour authentifier les utilisateurs via un service LDAP. 
+Après une authentification réussie, l'utilisateur est redirigé vers la page d'accueil, qui offre une vue détaillée des informations de son compte LDAP ainsi que des services auxquels il a accès.
 
 Selon les privilèges de l'utilisateur, il peut accéder à certains services.
 
@@ -22,10 +20,14 @@ Les utilisateurs administrateurs ont accès à :
 
 ## Guide utilisateur    
 
+
+
+
 ## Détails techniques 
 
 Ce site à été développé en utilisant les bonnes pratiques de programmation, donc facilement maintenable et évolutif.
 
+Notamment ce site utilise le modèle MVC (Modèle-Vue-Contrôleur). 
 
 
 
@@ -74,8 +76,6 @@ Par défaut, Apache écoute sur le port 80 pour les requêtes HTTP. Puisque nous
 ### 3. Activation du module SSL sur Apache
 
 Le support SSL/TLS sur Apache nécessite que le module `mod_ssl` soit activé. Cette étape est essentielle pour que la configuration précédente fonctionne correctement.
-
-
 
 
 ### Limitations et précautions

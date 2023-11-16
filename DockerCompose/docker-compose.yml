@@ -65,6 +65,34 @@ services:
       - "8443:443"
     networks:
       - ldap_network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb_container
+    volumes:
+      - ./db_data/mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    networks:
+      - ldap_network
+
+  mongo-express:
+     image: mongo-express
+     container_name: mongo_express_container
+     depends_on:
+       - mongodb
+     environment:
+       ME_CONFIG_MONGODB_ADMINUSERNAME: root
+       ME_CONFIG_MONGODB_ADMINPASSWORD: example
+       ME_CONFIG_MONGODB_SERVER: mongodb
+     ports:
+       - "8081:8081"
+     networks:
+       - ldap_network
+
 networks:
   ldap_network:
     driver: bridge
