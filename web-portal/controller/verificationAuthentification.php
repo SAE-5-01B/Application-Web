@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "./../model/LDAP/methodeLDAP.php";
+require "./../model/methodeLDAP.php";
 if(isset($_POST['username']) && isset($_POST['password'])){
     $username = $_POST['username'];
     $password = $_POST['password'];

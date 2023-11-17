@@ -8,7 +8,7 @@ class connectionLDAP
     private function __construct()
     {
 
-        $this->ldap_conn = ldap_connect("ldap", 389) or die("Could not connect to LDAP server.");
+        $this->ldap_conn = ldap_connect("ldap-server", 389) or die("Could not connect to LDAP server.");
 
         ldap_set_option($this->ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
     }

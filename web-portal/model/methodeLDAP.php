@@ -1,4 +1,14 @@
 <?php
+/*Pour choper les variables d'environnement il faut faire :
+ * $ldap_server = getenv('NOM_VARIABLE_ENVIRONNEMENT');
+ *
+ */
+//Récupération des variables d'environnement
+$password_LDAP_ADMIN = getenv('LDAP_ADMIN_PASSWORD');
+$domain_niveau_1 = getenv('DOMAINENIV1');
+$domain_niveau_2 = getenv('DOMAINENIV2');
+
+
 require "connectionLDAP.php";
 /**
  * Cette fonction permet d'autentifier un utilisateur au LDAP
@@ -6,17 +16,18 @@ require "connectionLDAP.php";
  * @param string $password
  * @return boolean
  */
-function authentificationAuLDAP($username, $password){
+function authentificationAuLDAP($username, $password)
+{
     $ldap_conn = connectionLDAP::getInstance()->getConnection();
     if ($ldap_conn) {
-        if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {
-            $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . $username . ")");
+        if (@ldap_bind($ldap_conn, "cn=admin,dc=".getenv('DOMAINENIV2').",dc=".getenv("DOMAINENIV1"), getenv('LDAP_ADMIN_PASSWORD'))) {
+            $search = ldap_search($ldap_conn, "dc=".getenv('DOMAINENIV2') .",dc=".getenv("DOMAINENIV1"), "(uid=" . $username . ")");
             if ($search) {
                 $entries = ldap_get_entries($ldap_conn, $search);
                 if ($entries["count"] > 0) {
                     $userdn = $entries[0]["dn"];
                     if (@ldap_bind($ldap_conn, $userdn, $password)) {
-                        return $entries[0]; // Retourne les détails de l'utilisateur
+                        return $entries[0];
                     } else {
                         return false;
                     }
@@ -36,18 +47,19 @@ function authentificationAuLDAP($username, $password){
 
 /*
  * Cette fonction permet de vérifier si un utilisateur est un administrateur
+ * Revoir cette fonction pour qu'elle avec les groupes admin (LDAP).
  */
 function isAdmin($username) {
     $ldap_conn = connectionLDAP::getInstance()->getConnection();
     if ($ldap_conn) {
         // Se connecter d'abord avec un compte de service/administrateur
-        if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {
+        if (@ldap_bind($ldap_conn, "cn=admin,dc=".getenv('DOMAINENIV2') .",dc=".getenv("DOMAINENIV1"), getenv('LDAP_ADMIN_PASSWORD'))) {
             // Recherche de l'utilisateur par son uid
-            $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . $username . ")");
+            $search = ldap_search($ldap_conn, "ou=utilisateurs,dc=".getenv('DOMAINENIV2') .",dc=".getenv("DOMAINENIV1"), "(uid=" . $username . ")");
             $entries = ldap_get_entries($ldap_conn, $search);
 
             // Vérifie si l'utilisateur a été trouvé et si son DN est dans le groupe "Administrateurs"
-            if ($entries["count"] > 0 && strpos($entries[0]["dn"], "cn=Administrateurs,dc=mondomaine,dc=local") !== false) {
+            if ($entries["count"] > 0 && strpos($entries[0]["dn"], "cn=Administrateurs,dc=mondomaine,dc=local") !== false) { //TODO : changer le domaine et tout
                 return true; // L'utilisateur est un administrateur
             } else {
                 return false; // L'utilisateur n'est pas un administrateur
@@ -77,9 +89,9 @@ function passwordChange($username, $oldPassword, $newPassword) : string {
     $ldap_conn = connectionLDAP::getInstance()->getConnection();
     if ($ldap_conn) {
         // Se connecter d'abord avec un compte de service/administrateur
-        if (@ldap_bind($ldap_conn, "cn=admin,dc=mondomaine,dc=local", "adminpassword")) {
+        if (@ldap_bind($ldap_conn, "cn=admin,dc=".getenv('DOMAINENIV2') .",dc=".getenv("DOMAINENIV1"), getenv('LDAP_ADMIN_PASSWORD'))) {
             // Recherche de l'utilisateur par son uid
-            $search = ldap_search($ldap_conn, "dc=mondomaine,dc=local", "(uid=" . ldap_escape($username, "", LDAP_ESCAPE_FILTER) . ")");
+            $search = ldap_search($ldap_conn, "ou=utilisateurs,dc=".getenv('DOMAINENIV2') .",dc=".getenv("DOMAINENIV1"), "(uid=" . ldap_escape($username, "", LDAP_ESCAPE_FILTER) . ")");
             if ($search === false) {
                 // La recherche a échoué
                 return 'ERR_USER_SEARCH'; // La recherche a échoué
