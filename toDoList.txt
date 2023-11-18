@@ -1,0 +1,5 @@
+ToDolist pour moi :
+
+- Mettre dans la nav bar un logo de patte de chat
+- Dans le site changer le nom de l'organisation pour CATS qui signifie ("Central Authentication & Technology Services")
+- Dans la section "informations" changer le contenue pour qu'il soit cohérent avec le nom de l'organisation
