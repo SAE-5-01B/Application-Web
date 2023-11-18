@@ -8,7 +8,6 @@ $password_LDAP_ADMIN = getenv('LDAP_ADMIN_PASSWORD');
 $domain_niveau_1 = getenv('DOMAINENIV1');
 $domain_niveau_2 = getenv('DOMAINENIV2');
 
-
 require "connectionLDAP.php";
 /**
  * Cette fonction permet d'autentifier un utilisateur au LDAP
@@ -60,7 +59,6 @@ function isAdmin($username)
             $entries = ldap_get_entries($ldap_conn, $search);
             // Vérifie si l'utilisateur a été trouvé
             if ($entries["count"] > 0) {
-                echo "L'utilisateur a été trouvé";
                 $userDn = $entries[0]["dn"];
                 // Recherche des groupes de l'utilisateur
                 $search = ldap_search($ldap_conn, "ou=groupes,dc=" . getenv('DOMAINENIV2') . ",dc=" . getenv("DOMAINENIV1"), "(member=" . $userDn . ")");
@@ -138,4 +136,35 @@ function passwordChange($username, $oldPassword, $newPassword): string
     }
 }
 
-?>
+
+
+function findUserGroup($username) {
+    $ldap_conn = connectionLDAP::getInstance()->getConnection();
+    if ($ldap_conn) {
+        // Se connecter d'abord avec un compte de service/administrateur
+        if (@ldap_bind($ldap_conn, "cn=admin,dc=" . getenv('DOMAINENIV2') . ",dc=" . getenv("DOMAINENIV1"), getenv('LDAP_ADMIN_PASSWORD'))) {
+            // Recherche de l'utilisateur par son uid
+            $search = ldap_search($ldap_conn, "ou=utilisateurs,dc=" . getenv('DOMAINENIV2') . ",dc=" . getenv("DOMAINENIV1"), "(uid=" . $username . ")");
+            $entries = ldap_get_entries($ldap_conn, $search);
+            // Vérifie si l'utilisateur a été trouvé
+            if ($entries["count"] > 0) {
+                $userDn = $entries[0]["dn"];
+                // Recherche des groupes de l'utilisateur
+                $search = ldap_search($ldap_conn, "ou=groupes,dc=" . getenv('DOMAINENIV2') . ",dc=" . getenv("DOMAINENIV1"), "(member=" . $userDn . ")");
+                $entries = ldap_get_entries($ldap_conn, $search);
+                // Vérifie si l'utilisateur est dans le groupe admin
+                if ($entries["count"] > 0) {
+                    return $entries[0]["cn"][0];
+                }
+                else{
+                    return "Aucun groupe trouvé";
+                }
+            }
+            return false;
+        } else {
+            return false; // Connexion avec le compte admin échouée
+        }
+    } else {
+        return false; // Connexion LDAP échouée
+    }
+}

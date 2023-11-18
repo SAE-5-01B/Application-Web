@@ -9,17 +9,18 @@ if(isset($_POST['username']) && isset($_POST['password'])){
         $_SESSION['userDetails'] = $userDetails;
         //Mettre en variable de session le nom d'utilisateur
         $_SESSION['username'] = $username;
+        //Mettre en variable de session le groupe de l'utilisateur
+        $_SESSION['group'] = findUserGroup($username);
+
         //Regarder si l'utilisateur est un admin
         if(isAdmin($username)){
-            echo "Administrateur";
             $_SESSION['isAdmin'] = true;
         }
         else {
             $_SESSION['isAdmin'] = false;
-
         }
-        //header('Location: ./../view/Utilisateurs/espacePersonnelUtilisateur.php');
-        //exit();
+        header('Location: ./../view/Utilisateurs/espacePersonnelUtilisateur.php');
+        exit();
     }
     else {
         $_SESSION['error'] = "Connexion échouée";
