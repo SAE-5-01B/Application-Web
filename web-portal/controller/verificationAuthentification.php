@@ -11,14 +11,15 @@ if(isset($_POST['username']) && isset($_POST['password'])){
         $_SESSION['username'] = $username;
         //Regarder si l'utilisateur est un admin
         if(isAdmin($username)){
+            echo "Administrateur";
             $_SESSION['isAdmin'] = true;
         }
         else {
             $_SESSION['isAdmin'] = false;
 
         }
-        header('Location: ./../view/Utilisateurs/espacePersonnelUtilisateur.php');
-        exit();
+        //header('Location: ./../view/Utilisateurs/espacePersonnelUtilisateur.php');
+        //exit();
     }
     else {
         $_SESSION['error'] = "Connexion échouée";
