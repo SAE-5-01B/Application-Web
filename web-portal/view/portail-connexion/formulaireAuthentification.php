@@ -19,8 +19,8 @@
     </script>
 </head>
 <body>
-<div>
-    <h1 id="titreMiaou">Bienvenue sur le portail Miaou</h1>
+<div id="titrePlusImage">
+    <h1 id="titreMiaou">Bienvenue sur le portail CATS <img src="./../images/patte-de-chat.png" class="logo"></h1>
 </div>
 <div class="login-container">
     <h1>Connectez-vous</h1>
@@ -45,7 +45,7 @@
 
     <div class="button-group">
         <button onclick="toggleInfoPopup()">Informations</button>
-        <a href="formulaireEnvoieMail.html"><button>Nous contacter</button></a>
+        <a href="Informations.html"><button>Nous contacter</button></a>
     </div>
 
 </div>
@@ -54,9 +54,13 @@
 <div id="infoPopup">
     <h2>Informations sur le site</h2>
 
-    <p>Bienvenue et merci d'avoir fait confiance aux services Miaou. Miaou est un service de stockage de fichiers sécurisé.</p>
+    <p>Bienvenue sur CATS (Central Authentication & Technology Services), votre solution tout-en-un pour la gestion et la sécurisation de données. Nous apprécions votre confiance dans notre projet innovant.</p>
 
-    <p>Si vous n'avez pas encore de compte chez nous, veuillez contacter l'un de nos supports afin qu'il puisse vous créer un compte. Pour nous contacter, vous pouvez cliquer sur le bouton "Nous contacter" présent sur le portail de connexion.</p>
+    <p>CATS est dédié à simplifier votre expérience digitale en regroupant des services essentiels comme le stockage de données et un service FTP robuste pour la gestion de fichiers et dossiers. Notre plateforme est conçue pour vous offrir efficacité et commodité.</p>
+
+    <p>Nous prenons la sécurité au sérieux. CATS assure des communications sécurisées et protégées sur le site, vous garantissant tranquillité d'esprit et protection optimale de vos informations.</p>
+
+    <p>Pour rejoindre notre communauté CATS, contactez notre support pour créer un compte. Cliquez sur "Nous contacter" sur le portail de connexion pour toute assistance ou pour débuter votre expérience CATS.</p>
 
     <button onclick="toggleInfoPopup()">Fermer</button>
 </div>

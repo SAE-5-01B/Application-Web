@@ -124,3 +124,17 @@ button:hover {
     display: flex;
     align-items: center;
 }
+.logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+    margin-bottom: 7px;
+}
+#titrePlusImage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+
+}
