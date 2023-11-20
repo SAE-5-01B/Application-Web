@@ -13,8 +13,6 @@ services:
     volumes:
       - ./data/ldap_data:/var/lib/ldap
       - ./data/ldap_config:/etc/ldap/slapd.d
-      - ./data/nouveauContenu.ldif:/nouveauContenu.ldif
-
   phpldapadmin:
     image: osixia/phpldapadmin
     container_name: ldap_phpldapadmin_container
@@ -37,13 +35,25 @@ services:
         COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
         COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
         COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
-           
-        RUN apt-get update && apt-get install -y libldap2-dev && \
-          docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
-          docker-php-ext-install ldap && \
-          a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
-            && service apache2 restart       
+        
+        RUN apt-get update && apt-get install -y \
+        libldap2-dev \
+        git \
+        zip \
+        unzip \
+        && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+        && docker-php-ext-install ldap \
+        && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
+        && service apache2 restart      
+        
+        # Installer Composer
+        RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+        && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+        && php -r "unlink('composer-setup.php');"
 
+        # Installer la bibliothèque OpenIDConnectClient via Composer
+        WORKDIR /var/www/html
+        RUN composer require jumbojett/openid-connect-php
     entrypoint:
       - /bin/bash
       - -c

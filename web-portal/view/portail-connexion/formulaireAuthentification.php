@@ -64,7 +64,5 @@
 
     <button onclick="toggleInfoPopup()">Fermer</button>
 </div>
-
-
 </body>
 </html>
