@@ -79,9 +79,22 @@ array(14) {
 <body>
 <div class="navbar">
     <nav class="navbar">
-        <a href="espacePersonnelUtilisateur.php" class="nav-link">Talbeau de bord</a>
-        <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
-        <a href="./../../controller/deconnexion.php" class="nav-link">Se déconnecter</a>
+
+        <div id="gaucheNavBarre">
+            <div id="imgAndCATS"><img src="./../images/patte-de-chat.png" alt="Logo du projet Miaou" class="logo"><a id="nomProjet">CATS </a></div>
+        </div>
+
+        <div id="millieuNavBarre">
+
+            <a href="espacePersonnelUtilisateur.php" class="nav-link">Talbeau de bord</a>
+            <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
+            <a href="" class="nav-link">À propos</a>
+        </div>
+
+        <div id="droiteNavBarre">
+            <a href="./../../controller/deconnexion.php" class="nav-link">Se déconnecter</a>
+        </div>
+
     </nav>
 </div>
 
