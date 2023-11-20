@@ -42,11 +42,7 @@ services:
           docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
           docker-php-ext-install ldap && \
           a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
-            && service apache2 restart
-        
-       
-        
-    
+            && service apache2 restart       
 
     entrypoint:
       - /bin/bash
@@ -78,5 +74,8 @@ services:
       - DB_VENDOR=H2
     ports:
       - "8080:8080"
+    volumes:
+      - ./data/keycloak_data:/opt/jboss/keycloak/standalone/data
+      - ./data/keycloak_log:/opt/jboss/keycloak/standalone/log
     depends_on:
       - ldap-server
