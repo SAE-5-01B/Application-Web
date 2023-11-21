@@ -1,6 +1,9 @@
 <?php
 use Stevenmaguire\OAuth2\Client\Provider\Keycloak;
 require_once './../../vendor/autoload.php';
+
+//TOdo c'est ici que je mettrai la session des utilisateurs et récupérerai les données de l'utilisateur ainsi que son token pour qu'il puisse se connecter à d'autres services
+
 $provider = new Keycloak([
     'authServerUrl' => 'http://localhost:8080/auth', // Pour la communication serveur à serveur
     'realm' => 'master',
