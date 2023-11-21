@@ -1,6 +1,6 @@
 <?php session_start();
 if (!isset($_SESSION['userDetails'])) {
-    header('Location: ./../view/portail-connexion/formulaireAuthentification.php');
+    header('Location: ./../view/portail-connexion-Keycloak/formulaireAuthentification.php');
     exit();
 }
 

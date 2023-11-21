@@ -21,12 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Si l'authentification échoue, stockez le message d'erreur dans la session
         $_SESSION['error'] = 'Erreur d\'authentification: ' . $e->getMessage();
         // Redirige de nouveau vers le formulaire de connexion
-        header('Location: ./../view/portail-connexion/formulaireConnexion.php');
+        header('Location: ./../view/portail-connexion-Keycloak/formulaireConnexion.php');
         exit();
     }
 } else {
     // Redirige vers la page de connexion si la méthode de requête n'est pas POST
-    header('Location: ./../view/portail-connexion/formulaireConnexion.php');
+    header('Location: ./../view/portail-connexion-Keycloak/formulaireConnexion.php');
     exit();
 }
 ?>

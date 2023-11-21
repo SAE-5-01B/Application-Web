@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f6dbc3e1-87a4-4e2d-9b69-5e4ab486e236" name="Changes" comment="Début de la méthode de modification de mot de passes">
+      <change beforePath="$PROJECT_DIR$/DockerCompose/data/ldap_data/lock.mdb" beforeDir="false" afterPath="$PROJECT_DIR$/DockerCompose/data/ldap_data/lock.mdb" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="74d7417aa004c0b98d5560cccc9bc6fbf12ca3e2" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2XG0Cdw2QhVmU9SzTUwiJpBEyXa" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Application-Web&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/gaeta/OneDrive - umontpellier.fr/Cours IUT 3ème année/Semestre 5/S5-SAE -G3/Application-Web&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gaeta\OneDrive - umontpellier.fr\Cours IUT 3ème année\Semestre 5\S5-SAE -G3\Application-Web\app\controller" />
+      <recent name="C:\Users\gaeta\OneDrive - umontpellier.fr\Cours IUT 3ème année\Semestre 5\S5-SAE -G3\Application-Web\app\view" />
+      <recent name="C:\Users\gaeta\OneDrive - umontpellier.fr\Cours IUT 3ème année\Semestre 5\S5-SAE -G3\Application-Web\app\model" />
+      <recent name="C:\Users\gaeta\OneDrive - umontpellier.fr\Cours IUT 3ème année\Semestre 5\S5-SAE -G3\Application-Web\app\www" />
+      <recent name="C:\Users\gaeta\OneDrive - umontpellier.fr\Cours IUT 3ème année\Semestre 5\S5-SAE -G3\Application-Web\app" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f6dbc3e1-87a4-4e2d-9b69-5e4ab486e236" name="Changes" comment="" />
+      <created>1698239984235</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698239984235</updated>
+      <workItem from="1698239985212" duration="4792000" />
+      <workItem from="1698256202273" duration="1216000" />
+      <workItem from="1698396539161" duration="3810000" />
+      <workItem from="1698407541134" duration="3628000" />
+      <workItem from="1698411238490" duration="395000" />
+      <workItem from="1698411642669" duration="164000" />
+      <workItem from="1698411827786" duration="87000" />
+      <workItem from="1698484552156" duration="1830000" />
+      <workItem from="1698506580387" duration="4740000" />
+      <workItem from="1698511465745" duration="803000" />
+      <workItem from="1698515814111" duration="118000" />
+      <workItem from="1698516269260" duration="807000" />
+      <workItem from="1698574376907" duration="1684000" />
+      <workItem from="1698652050623" duration="10099000" />
+      <workItem from="1698665554355" duration="8285000" />
+      <workItem from="1698861060995" duration="14000" />
+      <workItem from="1698942686693" duration="7537000" />
+      <workItem from="1699085692222" duration="9600000" />
+      <workItem from="1699095564888" duration="625000" />
+      <workItem from="1699115148427" duration="6337000" />
+      <workItem from="1699129374878" duration="47000" />
+      <workItem from="1699257355752" duration="865000" />
+      <workItem from="1699259551084" duration="1998000" />
+      <workItem from="1699275109217" duration="29000" />
+      <workItem from="1699277250692" duration="1591000" />
+      <workItem from="1699435593111" duration="8000" />
+      <workItem from="1699513308358" duration="3120000" />
+      <workItem from="1699535693096" duration="11000" />
+      <workItem from="1699557666162" duration="40000" />
+      <workItem from="1699619154667" duration="2148000" />
+      <workItem from="1699644181716" duration="2402000" />
+      <workItem from="1699896569722" duration="536000" />
+      <workItem from="1700061344885" duration="2555000" />
+      <workItem from="1700063941411" duration="1277000" />
+      <workItem from="1700074920018" duration="126000" />
+    </task>
+    <task id="LOCAL-00001" summary="First Push">
+      <option name="closed" value="true" />
+      <created>1698240568176</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698240568176</updated>
+    </task>
+    <task id="LOCAL-00002" summary="First Push">
+      <option name="closed" value="true" />
+      <created>1698257629608</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698257629608</updated>
+    </task>
+    <task id="LOCAL-00003" summary="HTTPS c'est de la merde">
+      <option name="closed" value="true" />
+      <created>1698328502358</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698328502358</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Ajout des certificats">
+      <option name="closed" value="true" />
+      <created>1698328645938</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698328645938</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Changements de certificats + changement de config mais ça marche toujours pas">
+      <option name="closed" value="true" />
+      <created>1698400605844</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698400605844</updated>
+    </task>
+    <task id="LOCAL-00006" summary="LE HTTPS NE MARCHE PAS PUTAIN DE MERDE">
+      <option name="closed" value="true" />
+      <created>1698411276917</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698411276917</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Nouveaux certificats">
+      <option name="closed" value="true" />
+      <created>1698411866318</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1698411866318</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Test">
+      <option name="closed" value="true" />
+      <created>1698485540761</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698485540761</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Test">
+      <option name="closed" value="true" />
+      <created>1698485967711</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1698485967711</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Simplification de la configuration de HTTPS mais ça marche toujours pas">
+      <option name="closed" value="true" />
+      <created>1698511196160</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1698511196160</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Push des .htaccess">
+      <option name="closed" value="true" />
+      <created>1698655278273</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1698655278273</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Amélioration de l'authentification">
+      <option name="closed" value="true" />
+      <created>1698657254740</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1698657254742</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Redirection vers le formulaire si on est pas authentifier">
+      <option name="closed" value="true" />
+      <created>1698658618862</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1698658618862</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Avancé de l'authentification">
+      <option name="closed" value="true" />
+      <created>1698660133475</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1698660133475</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Push">
+      <option name="closed" value="true" />
+      <created>1698660155196</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1698660155196</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Avancement du portail de connexion (Ajout de deux boutons)">
+      <option name="closed" value="true" />
+      <created>1698662367862</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1698662367862</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Push">
+      <option name="closed" value="true" />
+      <created>1698662457928</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1698662457928</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Modification nom de dossier">
+      <option name="closed" value="true" />
+      <created>1698662585466</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1698662585466</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Avancé du portail">
+      <option name="closed" value="true" />
+      <created>1698670057578</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1698670057578</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Modification de la fonction d'authentification">
+      <option name="closed" value="true" />
+      <created>1698670315625</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1698670315625</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Ajout de la méthode isAdmin">
+      <option name="closed" value="true" />
+      <created>1698673535848</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1698673535848</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Création de la page de bienvenue à l'espace miaou + possibilité de se déconnecter">
+      <option name="closed" value="true" />
+      <created>1698673926605</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1698673926605</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Le https marche inchallah">
+      <option name="closed" value="true" />
+      <created>1698949197618</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1698949197618</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Le https marche inchallah">
+      <option name="closed" value="true" />
+      <created>1698949213097</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1698949213097</updated>
+    </task>
+    <task id="LOCAL-00025" summary="REAMDME">
+      <option name="closed" value="true" />
+      <created>1698950228256</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1698950228256</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Début du service FTP avec LDAP">
+      <option name="closed" value="true" />
+      <created>1699090831340</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1699090831341</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Ajout FTP il manque plus qu'a configurer le serveur FTP pour qu'il utilise l'annuaire LDAP">
+      <option name="closed" value="true" />
+      <created>1699094595498</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1699094595498</updated>
+    </task>
+    <task id="LOCAL-00028" summary="push">
+      <option name="closed" value="true" />
+      <created>1699121478731</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1699121478731</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Début de la fusion entre http/https">
+      <option name="closed" value="true" />
+      <created>1699513999109</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1699513999109</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Ajout des certificats et des fichiers de configuration">
+      <option name="closed" value="true" />
+      <created>1699514071468</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1699514071468</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Push">
+      <option name="closed" value="true" />
+      <created>1699516350460</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1699516350460</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Push">
+      <option name="closed" value="true" />
+      <created>1699557691714</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1699557691714</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Résolution d'un problème de DNS et le https et fusioné avec le http">
+      <option name="closed" value="true" />
+      <created>1699561913659</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1699561913659</updated>
+    </task>
+    <task id="LOCAL-00034" summary="README.md">
+      <option name="closed" value="true" />
+      <created>1699619578753</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1699619578753</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Ajout de la page des informationsUtilisateur.php">
+      <option name="closed" value="true" />
+      <created>1699621041564</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1699621041564</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Suprpresion de fichier qui servent à rien">
+      <option name="closed" value="true" />
+      <created>1699621267146</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1699621267146</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Petit changement">
+      <option name="closed" value="true" />
+      <created>1699645963909</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1699645963909</updated>
+    </task>
+    <task id="LOCAL-00038" summary="test">
+      <option name="closed" value="true" />
+      <created>1699646139701</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1699646139701</updated>
+    </task>
+    <task id="LOCAL-00039" summary="test">
+      <option name="closed" value="true" />
+      <created>1699646271698</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1699646271698</updated>
+    </task>
+    <task id="LOCAL-00040" summary="test">
+      <option name="closed" value="true" />
+      <created>1699646364707</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1699646364707</updated>
+    </task>
+    <task id="LOCAL-00041" summary="test">
+      <option name="closed" value="true" />
+      <created>1699646577496</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1699646577496</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Page html/css des informationsUtilisateur.php">
+      <option name="closed" value="true" />
+      <created>1700062939497</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1700062939497</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Changement nom de dossiers plus amélioration page web">
+      <option name="closed" value="true" />
+      <created>1700063482499</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1700063482499</updated>
+    </task>
+    <task id="LOCAL-00044" summary="CSS modifications">
+      <option name="closed" value="true" />
+      <created>1700064314996</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1700064314996</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Début de la méthode de modification de mot de passes">
+      <option name="closed" value="true" />
+      <created>1700065221171</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1700065221171</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/Application-Web-Sans-HTTPS" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/Application-Web-HTTPS-Sans-HTTPS" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/Application-Web-HTTPS" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Avancé de l'authentification" />
+    <MESSAGE value="Avancement du portail de connexion (Ajout de deux boutons)" />
+    <MESSAGE value="Modification nom de dossier" />
+    <MESSAGE value="Avancé du portail" />
+    <MESSAGE value="Modification de la fonction d'authentification" />
+    <MESSAGE value="Ajout de la méthode isAdmin" />
+    <MESSAGE value="Création de la page de bienvenue à l'espace miaou + possibilité de se déconnecter" />
+    <MESSAGE value="Le https marche inchallah" />
+    <MESSAGE value="REAMDME" />
+    <MESSAGE value="Début du service FTP avec LDAP" />
+    <MESSAGE value="Ajout FTP il manque plus qu'a configurer le serveur FTP pour qu'il utilise l'annuaire LDAP" />
+    <MESSAGE value="push" />
+    <MESSAGE value="Début de la fusion entre http/https" />
+    <MESSAGE value="Ajout des certificats et des fichiers de configuration" />
+    <MESSAGE value="Push" />
+    <MESSAGE value="Résolution d'un problème de DNS et le https et fusioné avec le http" />
+    <MESSAGE value="README.md" />
+    <MESSAGE value="Ajout de la page des informationsUtilisateur.php" />
+    <MESSAGE value="Suprpresion de fichier qui servent à rien" />
+    <MESSAGE value="Petit changement" />
+    <MESSAGE value="test" />
+    <MESSAGE value="Page html/css des informationsUtilisateur.php" />
+    <MESSAGE value="Changement nom de dossiers plus amélioration page web" />
+    <MESSAGE value="CSS modifications" />
+    <MESSAGE value="Début de la méthode de modification de mot de passes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Début de la méthode de modification de mot de passes" />
+  </component>
+</project>

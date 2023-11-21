@@ -2,6 +2,6 @@
 session_start();
 unset($_SESSION['userDetails']);
 session_destroy();
-header('Location: ./../view/portail-connexion/formulaireAuthentification.php');
+header('Location: ./../view/portail-connexion-Keycloak/formulaireAuthentification.php');
 exit();
 ?>

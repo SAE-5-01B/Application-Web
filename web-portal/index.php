@@ -1,4 +1,4 @@
 <?php
-header('Location: ./view/portail-connexion/formulaireAuthentification.php');
+header('Location: ./model/Keycloak/connexionKeycloak.php');
 ?>
 
