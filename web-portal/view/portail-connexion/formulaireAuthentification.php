@@ -30,18 +30,10 @@
         unset($_SESSION['error']);
     }
     ?>
-    <form method="post" action="./../../controller/verificationAuthentification.php">
-        <div class="input-group">
-            <label for="username">Nom d'utilisateur</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div class="input-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Connexion</button>
-
+    <form action="./../../model/connexionKeycloak.php">
+        <button type="submit">Connexion avec Keycloak</button>
     </form>
+
 
     <div class="button-group">
         <button onclick="toggleInfoPopup()">Informations</button>
