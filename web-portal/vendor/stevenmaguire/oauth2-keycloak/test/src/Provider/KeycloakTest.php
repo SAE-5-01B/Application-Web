@@ -511,7 +511,7 @@ EOF;
                 ->shouldReceive('getBody')
                 ->andReturn($accessTokenResponseStream);
             $response
-                ->shouldReceive('getHeader')
+                ->shouldReceive('getHeader');
             $response
                 ->shouldReceive('getStatusCode')
                 ->andReturn(401);
