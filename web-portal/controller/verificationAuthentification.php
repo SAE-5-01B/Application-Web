@@ -1,6 +1,6 @@
 <?php
 session_start();
-require './../model/Keycloak/methodeKeycloak.php';
+require './../model/methodeKeycloak.php';
 // Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des informations du formulaire
