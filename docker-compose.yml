@@ -44,16 +44,7 @@ services:
         && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
         && docker-php-ext-install ldap \
         && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
-        && service apache2 restart      
-        
-        # Installer Composer
-        RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-        && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-        && php -r "unlink('composer-setup.php');"
-
-        # Installer la bibliothèque OpenIDConnectClient via Composer
-        WORKDIR /var/www/html
-        RUN composer require jumbojett/openid-connect-php
+        && service apache2 restart
     entrypoint:
       - /bin/bash
       - -c
