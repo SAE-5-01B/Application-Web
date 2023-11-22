@@ -1,70 +1,5 @@
 <?php
 session_start();
-/*
-Informations que je peux avoir sur l'utilisateur:
-array(14) {
-  ["objectclass"]=&gt;
-  array(3) {
-    ["count"]=&gt;
-    int(2)
-    [0]=&gt;
-    string(13) "inetOrgPerson"
-    [1]=&gt;
-    string(3) "top"
-  }
-  [0]=&gt;
-  string(11) "objectclass"
-  ["uid"]=&gt;
-  array(2) {
-    ["count"]=&gt;
-    int(1)
-    [0]=&gt;
-    string(12) "jpatagueulle"
-  }
-  [1]=&gt;
-  string(3) "uid"
-  ["cn"]=&gt;
-  array(2) {
-    ["count"]=&gt;
-    int(1)
-    [0]=&gt;
-    string(17) "James Patagueulle"
-  }
-  [2]=&gt;
-  string(2) "cn"
-  ["sn"]=&gt;
-  array(2) {
-    ["count"]=&gt;
-    int(1)
-    [0]=&gt;
-    string(11) "Patagueulle"
-  }
-  [3]=&gt;
-  string(2) "sn"
-  ["givenname"]=&gt;
-  array(2) {
-    ["count"]=&gt;
-    int(1)
-    [0]=&gt;
-    string(5) "James"
-  }
-  [4]=&gt;
-  string(9) "givenname"
-  ["userpassword"]=&gt;
-  array(2) {
-    ["count"]=&gt;
-    int(1)
-    [0]=&gt;
-    string(10) "jp23051999"
-  }
-  [5]=&gt;
-  string(12) "userpassword"
-  ["count"]=&gt;
-  int(6)
-  ["dn"]=&gt;
-  string(50) "uid=jpatagueulle,ou=utilisateurs,dc=example,dc=org"
-}
- */
 ?>
 
 <!DOCTYPE html>
@@ -73,20 +8,20 @@ array(14) {
     <title>Informations de l'Utilisateur</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/stylePagesPersonnelUtilisateur.css">
-    <link rel="stylesheet" href="./../style/styleBarreNavigation.css">
+    <link rel="stylesheet" href="../Style/stylePagesPersonnelUtilisateur.css">
+    <link rel="stylesheet" href="../Style/styleBarreNavigation.css">
 </head>
 <body>
 <div class="navbar">
     <nav class="navbar">
 
         <div id="gaucheNavBarre">
-            <div id="imgAndCATS"><img src="./../images/patte-de-chat.png" alt="Logo du projet Miaou" class="logo"><a id="nomProjet">CATS </a></div>
+            <div id="imgAndCATS"><img src="../Images/patte-de-chat.png" alt="Logo du projet Miaou" class="logo"><a id="nomProjet">CATS </a></div>
         </div>
 
         <div id="millieuNavBarre">
 
-            <a href="espacePersonnelUtilisateur.php" class="nav-link">Talbeau de bord</a>
+            <a href="espacePersonnelUtilisateur.html" class="nav-link">Talbeau de bord</a>
             <a href="./informationsUtilisateur.php" class="nav-link">Mes informations</a>
             <a href="" class="nav-link">À propos</a>
         </div>
