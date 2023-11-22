@@ -2,6 +2,6 @@
 session_start();
 unset($_SESSION['userDetails']);
 session_destroy();
-header('Location: ./../index.php');
+header('Location: ./../index.html');
 exit();
 ?>

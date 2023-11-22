@@ -80,3 +80,4 @@ services:
       - ./data/keycloak_log:/opt/jboss/keycloak/standalone/log
     depends_on:
       - ldap-server
+

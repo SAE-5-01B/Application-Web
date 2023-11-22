@@ -1,5 +1,0 @@
-{
-    "require": {
-        "stevenmaguire/oauth2-keycloak": "^5.1"
-    }
-}
