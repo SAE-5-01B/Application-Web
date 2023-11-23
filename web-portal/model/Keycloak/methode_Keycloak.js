@@ -1,5 +1,3 @@
-import { keycloak } from "./keycloak-config.js";
-
 const KeycloakService = {
     login: function() {
         keycloak.login();
@@ -15,4 +13,3 @@ const KeycloakService = {
         };
     },
 };
-export default KeycloakService;
