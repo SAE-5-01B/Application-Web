@@ -8,6 +8,9 @@ services:
       LDAP_ORGANISATION: "CATS"
       LDAP_DOMAIN: "$DOMAINENIV2.$DOMAINENIV1"
       LDAP_ADMIN_PASSWORD: "$LDAP_ADMIN_PASSWORD"
+      LDAP_READONLY_USER: true
+      LDAP_READONLY_USER_USERNAME: "sysUser"
+      LDAP_READONLY_USER_PASSWORD: "readOnlyPassword"
     ports:
       - "389:389"
     volumes:
@@ -76,12 +79,10 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - DB_VENDOR=H2
-
     ports:
       - "8080:8080"
     volumes:
-      - ./data/keycloak_data:/opt/jboss/keycloak/standalone/data
-      - ./data/keycloak_log:/opt/jboss/keycloak/standalone/log
+      - ./data/keycloak_data:/opt/keycloak/data
     depends_on:
       - ldap-server
 
