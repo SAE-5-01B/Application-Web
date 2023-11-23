@@ -42,7 +42,7 @@ services:
         git \
         zip \
         unzip \
-        && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+        && docker-php-ext-configure ldap --with-libdir=lib/$(gcc -dumpmachine)/ \
         && docker-php-ext-install ldap \
         && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
         && service apache2 restart
