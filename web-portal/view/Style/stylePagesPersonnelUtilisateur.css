@@ -9,9 +9,9 @@ body {
 }
 
 #contenuePage {
-    margin-top: 100px; /* Ajouter une marge en haut pour ne pas chevaucher la barre de navigation */
-    padding: 20px; /* Espacement autour du contenu */
-    max-width: 1200px; /* Largeur maximale pour une meilleure lisibilité */
+    margin-top: 100px;
+    padding: 20px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
