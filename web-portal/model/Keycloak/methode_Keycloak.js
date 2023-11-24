@@ -20,15 +20,5 @@ const KeycloakService = {
         return keycloak.authenticated;
     },
 
-    changePassword: function(oldPassword, newPassword){
-        return new Promise((resolve, reject) => {
-            keycloak.accountManagement().then((account) => {
-                account.changePassword(oldPassword, newPassword).then(() => {
-                    resolve();
-                }).catch((error) => {
-                    reject(error);
-                });
-            });
-        });
-    }
+
 };
