@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>Profil de l'Utilisateur</title>
     <script src="https://cdn.jsdelivr.net/npm/keycloak-js"></script>
-    <script  src="./../../model/Keycloak/keycloak-config.js"></script>
-    <script  src="./../../model/Keycloak/methode_Keycloak.js"></script>
     <link rel="stylesheet" href="./../Style/styleBarreNavigation.css">
     <link rel="stylesheet" href="./../Style/stylePagesPersonnelUtilisateur.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/keycloak-js"></script>
+    <script src="./../../model/Keycloak/keycloak-config.js"></script>
+    <script src="./../../model/Keycloak/methode_Keycloak.js"></script>
 </head>
 <body>
 
@@ -22,33 +22,8 @@
         <a href="./informationsUtilisateur.html" class="nav-link">Mes informations</a>
         <a href="" class="nav-link">À propos</a>
     </div>
-
     <div id="droiteNavBarre">
             <button id="logout">Se Déconnecter</button>
-            <script>
-                // S'assurer que la page est complètement chargée
-                window.addEventListener('load', () => {
-                    const logoutBtn = document.getElementById('logout');
-                    // Initialiser Keycloak et vérifier si l'utilisateur est connecté
-                    keycloak.init({ onLoad: 'check-sso' }).then(authenticated => {
-                        if (authenticated) {
-                            // Récupérer les informations de l'utilisateur
-                            const userInfo = KeycloakService.getUserInfo();
-                            // Mettre à jour le message de bienvenue
-                            document.getElementById('welcomeMessage').textContent = `Bonjour ${userInfo.firstNameAndLastName}`;
-                            // Affiche le groupe
-
-                        } else {
-                            // Redirection si non authentifié
-                            window.location.replace("https://localhost:8443/index.html");
-                        }
-                    });
-                    // Gérer le clic sur le bouton de déconnexion
-                    logoutBtn.addEventListener('click', () => {
-                        keycloak.logout();
-                    });
-                });
-            </script>
     </div>
 </nav>
 <div id="contenuePage">
@@ -62,11 +37,7 @@
 
     </div>
 
-
-
-
-
 </div>
-
+<script src="../../model/Keycloak/scriptsParPage/script_espacePersonnelUtilisateur.js"></script>
 </body>
 </html>

@@ -34,8 +34,6 @@ session_start();
                 // Initialiser Keycloak et vérifier si l'utilisateur est connecté
                 keycloak.init({ onLoad: 'check-sso' }).then(authenticated => {
                     if (authenticated) {
-                        // Récupérer les informations de l'utilisateur
-                        const userInfo = KeycloakService.getUserInfo();
                     } else {
                         // Redirection si non authentifié
                         window.location.replace("https://localhost:8443/index.html");
