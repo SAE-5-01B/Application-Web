@@ -45,5 +45,5 @@ if(isset($_POST['username']) && isset($_POST['oldPassword']) && isset($_POST['ne
 else {
     $_SESSION['changementMotDePasse'] = "Erreur lors du changement de mot de passe";
 }
-header('Location: ./../view/Utilisateurs/formulaireChangementMDPUtilisateur.php');
+header('Location: ./../view/Utilisateurs/formulaireChangementMDPUtilisateur.html');
 ?>
