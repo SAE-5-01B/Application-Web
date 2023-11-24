@@ -16,7 +16,6 @@ session_start();
 </head>
 <body>
 <nav class="navbar">
-
     <div id="gaucheNavBarre">
         <div id="imgAndCATS"><img src="../Images/patte-de-chat-blanche.png" alt="Logo du projet Miaou" class="logo"><a id="nomProjet">CATS </a></div>
     </div>
@@ -27,35 +26,27 @@ session_start();
     </div>
     <div id="droiteNavBarre">
         <button id="logout">Se Déconnecter</button>
-        <script>
-            // S'assurer que la page est complètement chargée
-            window.addEventListener('load', () => {
-                const logoutBtn = document.getElementById('logout');
-                // Initialiser Keycloak et vérifier si l'utilisateur est connecté
-                keycloak.init({ onLoad: 'check-sso' }).then(authenticated => {
-                    if (authenticated) {
-                    } else {
-                        // Redirection si non authentifié
-                        window.location.replace("https://localhost:8443/index.html");
-                    }
-                });
-                // Gérer le clic sur le bouton de déconnexion
-                logoutBtn.addEventListener('click', () => {
-                    keycloak.logout();
-                });
-            });
-        </script>
     </div>
 </nav>
 
 <div id="contenuePage">
     <div class="container">
-        <h1>Informations de l'utilisateur</h1>
+        <h1>Mes informations</h1>
+   </div>
 
+    <div class="container">
+        <ul class="listeInformations">
+            <li id="prenom">Prénom : </li>
+            <li id="nom">Nom : </li>
+            <li id="groupes">Vos groupes : </li>
+            <li></li>
+
+
+        </ul>
     </div>
 
 </div>
-
+<script src="../../model/Keycloak/scriptsParPage/script_informationUtilisateur.js"></script>
 </body>
 </html>
 
