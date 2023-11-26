@@ -5,14 +5,19 @@ window.addEventListener('load', () => {
         if (authenticated) {
             // Récupérer les informations de l'utilisateur
             const userInfo = KeycloakService.getUserInfo();
+
             // Récupérer les éléments HTML :
             const prenom = document.getElementById('prenom');
             const nom = document.getElementById('nom');
             const email = document.getElementById('email');
             const groupes = document.getElementById('groupes');
+
             //Mettre à jour les éléments HTML :
             prenom.textContent += userInfo.firstNameAndLastName.split(" ")[0];
             nom.textContent += userInfo.firstNameAndLastName.split(" ")[1];
+            // Supprimer le slash du début des noms de groupe
+            const groupNames = userInfo.groups.map(group => group.substring(1));
+            groupes.textContent = 'Groupes : ' + groupNames.join(', ');
         } else {
             // Redirection si non authentifié
             window.location.replace("https://localhost:8443/index.html");
@@ -23,7 +28,6 @@ window.addEventListener('load', () => {
         keycloak.logout();
     });
 });
-
 
 // Gérer le clic sur le bouton de changement de mot de passe (Redirection vers la page de changement de mot de passe)
 // Penser à authoriser la redirection vers la page de changement de mot de passe dans Keycloak
