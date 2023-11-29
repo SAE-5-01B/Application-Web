@@ -42,6 +42,19 @@ session_start();
             <li><p id="groupes">Groupes : </p></li>
         </ul>
     </div>
+
+    <div class="container">
+        <h1>Token</h1>
+        <p>Temps avant expiration : <span id="countdown"></span></p>
+        <p id="reponseBouton"></p>
+        <button id="refreshToken">Rafraîchir le Token</button>
+    </div>
+
+    <div class="container">
+        <h1>Session</h1>
+        <p>Temps restant : <span id="tempsRestantSession"></span></p>
+    </div>
+
     <div class="container">
         <h1>Votre compte Keycloak</h1>
         <button type="button" id="boutonCompteKeycloak">Accéder à mon compte personnel</button>

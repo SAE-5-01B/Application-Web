@@ -38,3 +38,43 @@ document.getElementById("boutonChangementMDP").addEventListener("click", functio
 document.getElementById("boutonCompteKeycloak").addEventListener("click", function() {
     window.location.replace("http://localhost:8080/realms/CATS/account/#/personal-info?client_id=portal-cats"); //Mettre le lien de redirection vers le compte Keycloak
 });
+
+
+// Fonction pour mettre à jour le compte à rebours
+function updateCountdown() {
+    const currentTime = Math.floor(Date.now() / 1000);
+    const timeLeft =  keycloak.tokenParsed.exp - currentTime;
+
+    if (timeLeft > 0) {
+        const hours = Math.floor(timeLeft / 3600);
+        const minutes = Math.floor((timeLeft % 3600) / 60);
+        const seconds = timeLeft % 60;
+
+        // Affiche le compte à rebours dans un élément avec l'ID 'countdown'
+        document.getElementById('countdown').innerHTML =
+            hours + 'h ' + minutes + 'm ' + seconds + 's ';
+    } else {
+        document.getElementById('countdown').innerHTML = 'Le token a expiré.';
+        clearInterval(interval);
+    }
+}
+
+// Mettre à jour le compte à rebours toutes les secondes
+const interval = setInterval(updateCountdown, 1000);
+
+//tempsRestantSession id
+
+
+document.getElementById('refreshToken').addEventListener('click', () => {
+    keycloak.updateToken(-1).then(refreshed => {
+        if (refreshed) {
+            console.log('Token rafraîchi avec succès');
+            updateCountdown();
+        } else {
+            console.log('Erreur lors de la tentative de rafraîchissement');
+        }
+    }).catch(err => {
+        console.log('Erreur lors de la tentative de rafraîchissement du token', err);
+    });
+});
+

@@ -35,8 +35,8 @@
         <h1>Vos services</h1>
         <div id="lesServicesUtilisateur">
             <div>
-                <img src="../Images/nextCloud.png" alt="Logo du service">
-                <p>NextCloud</p>
+                <a target="_blank" href="http://localhost:9080"><img src="../Images/nextCloud.png" alt="Logo du service">
+                <p>NextCloud</p></a>
             </div>
 
             <div>
@@ -47,6 +47,7 @@
 
         <!--Si l'utilisateur est admin il peut accéder à la console administrateur-->
         <div id="divAdminKeycloak" style="display: none">
+            <!--Quand le service marchera dans mon docker mettre l'url qui correspond-->
             <a target="_blank" href="http://localhost:8080/admin/CATS/console/#/CATS">
                 <img src="../Images/keycloak.png" alt="Logo du service">
                 <p>Console admin Keycloak</p>
