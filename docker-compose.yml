@@ -1,6 +1,9 @@
 version: '3'
 
 services:
+
+  # Service LDAP
+
   ldap-server:
     image: osixia/openldap
     container_name: ldap_server_container
@@ -17,6 +20,8 @@ services:
       - ./data/ldap_data:/var/lib/ldap
       - ./data/ldap_config:/etc/ldap/slapd.d
 
+  # Service phpldapadmin
+
   phpldapadmin:
     image: osixia/phpldapadmin
     container_name: ldap_phpldapadmin_container
@@ -27,6 +32,8 @@ services:
       - "6080:80"
     depends_on:
       - ldap-server
+
+  # Service Web-Portal
 
   web-portal:
     build:
@@ -70,6 +77,8 @@ services:
     ports:
       - "8443:443"
 
+  # Service Keycloak
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     command: [ "start-dev" ]
@@ -86,6 +95,8 @@ services:
     depends_on:
       - ldap-server
 
+
+  # Service Nextcloud
 
   nextcloud_db:
     image: mariadb
@@ -114,16 +125,77 @@ services:
     #volumes:
     #  - ./data/nextcloud_data:/var/www/html
     volumes:
-      - nextcloud_data:/var/www/html
+      - nextcloud_data:/var/www/html #Utilisation d'un volume pour la persistance des données mais pas un dossier monté
     environment:
       - MYSQL_HOST=nextcloud_db  # Nom du conteneur de la base de données
       - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE  # Nom de la base de données
       - MYSQL_USER=$NEXTCLOUD_MYSQL_USER  # Nom de l'utilisateur de la base de données
       - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD  # Mot de passe de l'utilisateur de la base de données
 
+
+  # Service Discourse
+  # https://github.com/bitnami/containers/blob/main/bitnami/discourse/docker-compose.yml
+  #
+
+  postgresql:
+    image: docker.io/bitnami/postgresql:16
+    volumes:
+      - postgresql_data:/bitnami/postgresql
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
+      - POSTGRESQL_USERNAME=bn_discourse
+      - POSTGRESQL_DATABASE=bitnami_discourse
+
+  redis:
+    image: docker.io/bitnami/redis:7.0
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
+    volumes:
+      - redis_data:/data
+
+  discourse:
+    image: docker.io/bitnami/discourse:3
+    ports:
+      - '8081:3000'  # Changez le port si nécessaire pour éviter les conflits
+    volumes:
+      - discourse_data:/bitnami/discourse
+    depends_on:
+      - postgresql
+      - redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
+      - DISCOURSE_HOST=www.example.com  # Remplacez par votre domaine
+      - DISCOURSE_DATABASE_HOST=postgresql
+      - DISCOURSE_DATABASE_PORT_NUMBER=5432
+      - DISCOURSE_DATABASE_USER=bn_discourse
+      - DISCOURSE_DATABASE_NAME=bitnami_discourse
+      - DISCOURSE_REDIS_HOST=redis
+      - DISCOURSE_REDIS_PORT_NUMBER=6379
+
+  sidekiq:
+    image: docker.io/bitnami/discourse:3
+    depends_on:
+      - discourse
+    volumes:
+      - sidekiq_data:/bitnami/discourse
+    command: /opt/bitnami/scripts/discourse-sidekiq/run.sh
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
+      - DISCOURSE_HOST=www.example.com  # Remplacez par votre domaine
+      - DISCOURSE_DATABASE_HOST=postgresql
+      - DISCOURSE_DATABASE_PORT_NUMBER=5432
+      - DISCOURSE_DATABASE_USER=bn_discourse
+      - DISCOURSE_DATABASE_NAME=bitnami_discourse
+      - DISCOURSE_REDIS_HOST=redis
+      - DISCOURSE_REDIS_PORT_NUMBER=6379
+
 volumes:
   nextcloud_db_data:
   nextcloud_data:
+  postgresql_data:
+  redis_data:
+  discourse_data:
+  sidekiq_data:
 
 
 
