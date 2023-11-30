@@ -133,69 +133,84 @@ services:
       - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD  # Mot de passe de l'utilisateur de la base de données
 
 
-  # Service Discourse
-  # https://github.com/bitnami/containers/blob/main/bitnami/discourse/docker-compose.yml
-  #
-
-  postgresql:
-    image: docker.io/bitnami/postgresql:16
-    volumes:
-      - postgresql_data:/bitnami/postgresql
+  # Service RocketChat
+  #https://github.com/RocketChat/Rocket.Chat/issues/15891
+  #https://docs.rocket.chat/setup-and-configure/advanced-workspace-management/authentication/open-id-connect/keycloak
+  #https://forums.rocket.chat/t/help-setting-up-oauth-with-keycloack/10202/12
+  rocketchat:
+    image: registry.rocket.chat/rocketchat/rocket.chat:${RELEASE:-latest}
+    restart: always
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.rocketchat.rule: Host(`${DOMAIN:-}`)
+      traefik.http.routers.rocketchat.tls: "true"
+      traefik.http.routers.rocketchat.entrypoints: https
+      traefik.http.routers.rocketchat.tls.certresolver: le
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
-      - POSTGRESQL_USERNAME=bn_discourse
-      - POSTGRESQL_DATABASE=bitnami_discourse
-
-  redis:
-    image: docker.io/bitnami/redis:7.0
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
-    volumes:
-      - redis_data:/data
-
-  discourse:
-    image: docker.io/bitnami/discourse:3
+      MONGO_URL: "${MONGO_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/${MONGODB_DATABASE:-rocketchat}?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
+      MONGO_OPLOG_URL: "${MONGO_OPLOG_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/local?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
+      ROOT_URL: ${ROOT_URL:-http://localhost:${HOST_PORT:-3000}}
+      PORT: ${PORT:-3000}
+      DEPLOY_METHOD: docker
+      DEPLOY_PLATFORM: ${DEPLOY_PLATFORM:-}
+      REG_TOKEN: ${REG_TOKEN:-}
+      # Keycloak OAuth settings
+      Accounts_OAuth_Custom_keycloak: "true"
+      Accounts_OAuth_Custom_keycloak_id: "Rocket-chat"
+      Accounts_OAuth_Custom_keycloak_secret: "eDwEJrBEjXNiaqmfQPF9Hsbq2xMgMjc3"
+      Accounts_OAuth_Custom_keycloak_url: "http://localhost:8080"
+      Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
+      Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
+      Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
+      Accounts_OAuth_Custom_keycloak_scope: "openid"
+      Accounts_OAuth_Custom_keycloak_access_token_param: "access_token"
+      Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec Keycloak miaou miaou"
+      Accounts_OAuth_Custom_keycloak_button_label_color: "#07F4F0"
+      Accounts_OAuth_Custom_keycloak_login_style: "redirect"
+      Accounts_OAuth_Custom_keycloak_button_color: "#13679A"
+      Accounts_OAuth_Custom_keycloak_token_sent_via: "payload"
+      Accounts_OAuth_Custom_keycloak_identity_token_sent_via: "header"
+      Accounts_OAuth_Custom_keycloak_key_field: "username"
+      Accounts_OAuth_Custom_keycloak_username_field: "preferred_username"
+      Accounts_OAuth_Custom_keycloak_name_field: "name"
+      Accounts_OAuth_Custom_keycloak_email_field: "email"
+      Accounts_OAuth_Custom_keycloak_roles_claim: ""
+      Accounts_OAuth_Custom_keycloak_groups_claim: ""
+      Accounts_OAuth_Custom_keycloak_groups_channel_map: ""
+      Accounts_OAuth_Custom_keycloak_channels_admin: "rocket.cat"
+      Accounts_OAuth_Custom_keycloak_merge_users: "true"
+      Accounts_OAuth_Custom_keycloak_map_channels: ""
+      Accounts_OAuth_Custom_keycloak_merge_roles: "false"
+      Accounts_OAuth_Custom_keycloak_show_button: "true"
+      Accounts_OAuth_Custom_keycloak_avatar_field: ""
+    depends_on:
+      - mongodb
+    expose:
+      - ${PORT:-3000}
     ports:
-      - '8081:3000'  # Changez le port si nécessaire pour éviter les conflits
-    volumes:
-      - discourse_data:/bitnami/discourse
-    depends_on:
-      - postgresql
-      - redis
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
-      - DISCOURSE_HOST=www.example.com  # Remplacez par votre domaine
-      - DISCOURSE_DATABASE_HOST=postgresql
-      - DISCOURSE_DATABASE_PORT_NUMBER=5432
-      - DISCOURSE_DATABASE_USER=bn_discourse
-      - DISCOURSE_DATABASE_NAME=bitnami_discourse
-      - DISCOURSE_REDIS_HOST=redis
-      - DISCOURSE_REDIS_PORT_NUMBER=6379
+      - "${BIND_IP:-0.0.0.0}:${HOST_PORT:-3000}:${PORT:-3000}"
 
-  sidekiq:
-    image: docker.io/bitnami/discourse:3
-    depends_on:
-      - discourse
+  mongodb:
+    image: docker.io/bitnami/mongodb:${MONGODB_VERSION:-5.0}
+    restart: always
     volumes:
-      - sidekiq_data:/bitnami/discourse
-    command: /opt/bitnami/scripts/discourse-sidekiq/run.sh
+      - mongodb_data:/bitnami/mongodb
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes  # Pour le développement uniquement
-      - DISCOURSE_HOST=www.example.com  # Remplacez par votre domaine
-      - DISCOURSE_DATABASE_HOST=postgresql
-      - DISCOURSE_DATABASE_PORT_NUMBER=5432
-      - DISCOURSE_DATABASE_USER=bn_discourse
-      - DISCOURSE_DATABASE_NAME=bitnami_discourse
-      - DISCOURSE_REDIS_HOST=redis
-      - DISCOURSE_REDIS_PORT_NUMBER=6379
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
+      MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
+      MONGODB_INITIAL_PRIMARY_HOST: ${MONGODB_INITIAL_PRIMARY_HOST:-mongodb}
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: ${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}
+      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
+      MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
+      ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
 
 volumes:
+  mongodb_data: { driver: local }
   nextcloud_db_data:
   nextcloud_data:
-  postgresql_data:
-  redis_data:
-  discourse_data:
-  sidekiq_data:
+
+
 
 
 
