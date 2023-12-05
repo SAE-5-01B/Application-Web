@@ -20,8 +20,26 @@ services:
       - ./data/ldap_data:/var/lib/ldap
       - ./data/ldap_config:/etc/ldap/slapd.d
 
-  # Service phpldapadmin
+  # Service Keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: [ "start-dev" ]
+    container_name: keycloak_container
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - DB_VENDOR=H2
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data/keycloak_data:/opt/keycloak/data
+    depends_on:
+      - ldap-server
+    extra_hosts:
+      - "keycloak:172.20.0.9"
 
+  # Service phpldapadmin
   phpldapadmin:
     image: osixia/phpldapadmin
     container_name: ldap_phpldapadmin_container
@@ -34,7 +52,6 @@ services:
       - ldap-server
 
   # Service Web-Portal
-
   web-portal:
     build:
       context: .
@@ -42,11 +59,11 @@ services:
         FROM php:apache
         COPY ./Certificats/localhost.crt /etc/ssl/certs/localhost.crt
         COPY ./Certificats/localhost.key /etc/ssl/private/localhost.key
-        
+
         COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
         COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
         COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
-        
+
         RUN apt-get update && apt-get install -y \
         libldap2-dev \
         git \
@@ -77,27 +94,8 @@ services:
     ports:
       - "8443:443"
 
-  # Service Keycloak
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    command: [ "start-dev" ]
-    container_name: keycloak_container
-    environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-      - DB_VENDOR=H2
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./data/keycloak_data:/opt/keycloak/data
-    depends_on:
-      - ldap-server
-
-
   # Service Nextcloud
-
+  # BD
   nextcloud_db:
     image: mariadb
     container_name: nextcloud_db
@@ -108,10 +106,10 @@ services:
     volumes:
       - nextcloud_db_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=$NEXTCLOUD_MYSQL_ROOT_PASSWORD  # Mot de passe de l'utilisateur root de mariadb
-      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE  # Nom de la base de données à créer à l'initialisation du conteneur
-      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER  # Nom de l'utilisateur de la base de données créée
-      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD  # Mot de passe de l'utilisateur créé
+      - MYSQL_ROOT_PASSWORD=$NEXTCLOUD_MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
 
   nextcloud_app:
     image: nextcloud
@@ -125,18 +123,15 @@ services:
     #volumes:
     #  - ./data/nextcloud_data:/var/www/html
     volumes:
-      - nextcloud_data:/var/www/html #Utilisation d'un volume pour la persistance des données mais pas un dossier monté
+      - nextcloud_data:/var/www/html
     environment:
-      - MYSQL_HOST=nextcloud_db  # Nom du conteneur de la base de données
-      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE  # Nom de la base de données
-      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER  # Nom de l'utilisateur de la base de données
-      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD  # Mot de passe de l'utilisateur de la base de données
+      - MYSQL_HOST=nextcloud_db
+      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
 
 
   # Service RocketChat
-  #https://github.com/RocketChat/Rocket.Chat/issues/15891
-  #https://docs.rocket.chat/setup-and-configure/advanced-workspace-management/authentication/open-id-connect/keycloak
-  #https://forums.rocket.chat/t/help-setting-up-oauth-with-keycloack/10202/12
   rocketchat:
     image: registry.rocket.chat/rocketchat/rocket.chat:${RELEASE:-latest}
     restart: always
@@ -156,9 +151,17 @@ services:
       REG_TOKEN: ${REG_TOKEN:-}
       # Keycloak OAuth settings
       Accounts_OAuth_Custom_keycloak: "true"
-      Accounts_OAuth_Custom_keycloak_id: "Rocket-chat"
-      Accounts_OAuth_Custom_keycloak_secret: "eDwEJrBEjXNiaqmfQPF9Hsbq2xMgMjc3"
-      Accounts_OAuth_Custom_keycloak_url: "http://localhost:8080"
+      Accounts_OAuth_Custom_keycloak_id: "rocket-chat-client"
+      Accounts_OAuth_Custom_keycloak_secret: "gKNfwdJZJDaS5oUWdVKynMDclYAa1vq9"
+      # URL du serveur Keycloak (Elle peut varié en fonction de l'installation)
+      # Pour tester en local il faut modifier le fichier hosts (C:\Windows\System32\drivers\etc) de votre machine et ajouter la ligne suivante :
+      # 127.0.0.1       keycloak
+
+      # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
+
+      # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
+
+      Accounts_OAuth_Custom_keycloak_url: "http://keycloak:8080"
       Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
       Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
       Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
@@ -183,13 +186,14 @@ services:
       Accounts_OAuth_Custom_keycloak_merge_roles: "false"
       Accounts_OAuth_Custom_keycloak_show_button: "true"
       Accounts_OAuth_Custom_keycloak_avatar_field: ""
+      #Supprimer la double authentification
+      Accounts_TwoFactorAuthentication_Enabled: "false"
     depends_on:
       - mongodb
     expose:
       - ${PORT:-3000}
     ports:
       - "${BIND_IP:-0.0.0.0}:${HOST_PORT:-3000}:${PORT:-3000}"
-
   mongodb:
     image: docker.io/bitnami/mongodb:${MONGODB_VERSION:-5.0}
     restart: always
@@ -204,13 +208,8 @@ services:
       MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
       MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
       ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
-
 volumes:
-  mongodb_data: { driver: local }
   nextcloud_db_data:
   nextcloud_data:
-
-
-
-
-
+  openproject_data:
+  mongodb_data: { driver: local }
