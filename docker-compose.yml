@@ -3,10 +3,10 @@ version: '3'
 services:
 
   # Service LDAP
-
   ldap-server:
     image: osixia/openldap
     container_name: ldap_server_container
+    command: --copy-service
     environment:
       LDAP_ORGANISATION: "CATS"
       LDAP_DOMAIN: "$DOMAINENIV2.$DOMAINENIV1"
@@ -19,25 +19,7 @@ services:
     volumes:
       - ./data/ldap_data:/var/lib/ldap
       - ./data/ldap_config:/etc/ldap/slapd.d
-
-  # Service Keycloak
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    command: [ "start-dev" ]
-    container_name: keycloak_container
-    environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-      - DB_VENDOR=H2
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./data/keycloak_data:/opt/keycloak/data
-    depends_on:
-      - ldap-server
-    extra_hosts:
-      - "keycloak:172.20.0.9"
+      - ./data/LDIF:/container/service/slapd/assets/config/bootstrap/ldif/custom
 
   # Service phpldapadmin
   phpldapadmin:
@@ -50,6 +32,48 @@ services:
       - "6080:80"
     depends_on:
       - ldap-server
+
+  # Service Keycloak
+  keycloak-db:
+    image: mysql:5.7
+
+    # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
+    #volumes:
+    #  - ./data/mysql_data:/var/lib/mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    command:
+      - "-Dkeycloak.migration.action=import"
+      - "-Dkeycloak.migration.provider=singleFile"
+      - "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/royaumeV4.json"
+      - "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+      - "start-dev"
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./data/REALM:/opt/jboss/keycloak/import
+
+    ports:
+      - 8080:8080
+    depends_on:
+      - keycloak-db
+
+
 
   # Service Web-Portal
   web-portal:
@@ -120,6 +144,7 @@ services:
     links:
       - nextcloud_db
 
+    # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
     #volumes:
     #  - ./data/nextcloud_data:/var/www/html
     volumes:
@@ -160,7 +185,6 @@ services:
       # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
 
       # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
-
       Accounts_OAuth_Custom_keycloak_url: "http://keycloak:8080"
       Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
       Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
@@ -209,6 +233,7 @@ services:
       MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
       ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
 volumes:
+  mysql-data:
   nextcloud_db_data:
   nextcloud_data:
   openproject_data:
