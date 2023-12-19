@@ -67,13 +67,10 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     volumes:
       - ./data/REALM:/opt/jboss/keycloak/import
-
     ports:
       - 8080:8080
     depends_on:
       - keycloak-db
-
-
 
   # Service Web-Portal
   web-portal:
@@ -87,16 +84,13 @@ services:
         COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
         COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
         COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
-
+        
         RUN apt-get update && apt-get install -y \
-        libldap2-dev \
-        git \
-        zip \
-        unzip \
-        && docker-php-ext-configure ldap --with-libdir=lib/$(gcc -dumpmachine)/ \
-        && docker-php-ext-install ldap \
-        && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
-        && service apache2 restart
+                git \
+                zip \
+                unzip \
+                && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
+                && service apache2 restart
     entrypoint:
       - /bin/bash
       - -c
@@ -127,6 +121,7 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     #volumes:
     #  - ./data/nextcloud_db_data:/var/lib/mysql
+
     volumes:
       - nextcloud_db_data:/var/lib/mysql
     environment:
@@ -136,25 +131,33 @@ services:
       - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
 
   nextcloud_app:
-    image: nextcloud
-    container_name: nextcloud_app
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM nextcloud:latest
+        RUN apt-get update && apt-get install -y \
+            libapache2-mod-auth-openidc \
+            && rm -rf /var/lib/apt/lists/*    container_name: nextcloud_app
     restart: always
     ports:
       - 9080:80
     links:
       - nextcloud_db
-
     # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
     #volumes:
     #  - ./data/nextcloud_data:/var/www/html
+    #  - ./data/nextconfig:/config
+
     volumes:
       - nextcloud_data:/var/www/html
+      - nextconfig:/config
     environment:
+      - NEXTCLOUD_ADMIN_USER=$NEXTCLOUD_ADMIN_USER
+      - NEXTCLOUD_ADMIN_PASSWORD=$NEXTCLOUD_ADMIN_PASSWORD
       - MYSQL_HOST=nextcloud_db
       - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
       - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
       - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
-
 
   # Service RocketChat
   rocketchat:
@@ -174,6 +177,7 @@ services:
       DEPLOY_METHOD: docker
       DEPLOY_PLATFORM: ${DEPLOY_PLATFORM:-}
       REG_TOKEN: ${REG_TOKEN:-}
+
       # Keycloak OAuth settings
       Accounts_OAuth_Custom_keycloak: "true"
       Accounts_OAuth_Custom_keycloak_id: "rocket-chat-client"
@@ -185,7 +189,7 @@ services:
       # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
 
       # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
-      Accounts_OAuth_Custom_keycloak_url: "http://keycloak:8080"
+      Accounts_OAuth_Custom_keycloak_url: "http://${ROCKET_CHAT_SERVER_IP}:${HOST_PORT:-8080}"
       Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
       Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
       Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
@@ -236,5 +240,7 @@ volumes:
   mysql-data:
   nextcloud_db_data:
   nextcloud_data:
+  nextconfig:
   openproject_data:
+
   mongodb_data: { driver: local }
