@@ -1,246 +1,244 @@
-version: '3'
+  version: '3'
 
-services:
+  services:
 
-  # Service LDAP
-  ldap-server:
-    image: osixia/openldap
-    container_name: ldap_server_container
-    command: --copy-service
-    environment:
-      LDAP_ORGANISATION: "CATS"
-      LDAP_DOMAIN: "$DOMAINENIV2.$DOMAINENIV1"
-      LDAP_ADMIN_PASSWORD: "$LDAP_ADMIN_PASSWORD"
-      LDAP_READONLY_USER: true
-      LDAP_READONLY_USER_USERNAME: "sysUser"
-      LDAP_READONLY_USER_PASSWORD: "readOnlyPassword"
-    ports:
-      - "389:389"
-    volumes:
-      - ./data/ldap_data:/var/lib/ldap
-      - ./data/ldap_config:/etc/ldap/slapd.d
-      - ./data/LDIF:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    # Service LDAP
+    ldap-server:
+      image: osixia/openldap
+      container_name: ldap_server_container
+      command: --copy-service
+      environment:
+        LDAP_ORGANISATION: "CATS"
+        LDAP_DOMAIN: "$DOMAINENIV2.$DOMAINENIV1"
+        LDAP_ADMIN_PASSWORD: "$LDAP_ADMIN_PASSWORD"
+        LDAP_READONLY_USER: true
+        LDAP_READONLY_USER_USERNAME: "sysUser"
+        LDAP_READONLY_USER_PASSWORD: "readOnlyPassword"
+      ports:
+        - "389:389"
+      volumes:
+        - ./data/ldap_data:/var/lib/ldap
+        - ./data/ldap_config:/etc/ldap/slapd.d
+        - ./data/LDIF:/container/service/slapd/assets/config/bootstrap/ldif/custom
 
-  # Service phpldapadmin
-  phpldapadmin:
-    image: osixia/phpldapadmin
-    container_name: ldap_phpldapadmin_container
-    environment:
-      PHPLDAPADMIN_LDAP_HOSTS: ldap-server
-      PHPLDAPADMIN_HTTPS: 0
-    ports:
-      - "6080:80"
-    depends_on:
-      - ldap-server
+    # Service phpldapadmin
+    phpldapadmin:
+      image: osixia/phpldapadmin
+      container_name: ldap_phpldapadmin_container
+      environment:
+        PHPLDAPADMIN_LDAP_HOSTS: ldap-server
+        PHPLDAPADMIN_HTTPS: 0
+      ports:
+        - "6080:80"
+      depends_on:
+        - ldap-server
 
-  # Service Keycloak
-  keycloak-db:
-    image: mysql:5.7
+    # Service Keycloak
+    keycloak-db:
+      image: mysql:5.7
 
-    # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
-    #volumes:
-    #  - ./data/mysql_data:/var/lib/mysql
-    volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
+      # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
+      #volumes:
+      #  - ./data/mysql_data:/var/lib/mysql
+      volumes:
+        - mysql-data:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: keycloak
+        MYSQL_USER: keycloak
+        MYSQL_PASSWORD: password
 
-  keycloak:
-    image: quay.io/keycloak/keycloak
-    command:
-      - "-Dkeycloak.migration.action=import"
-      - "-Dkeycloak.migration.provider=singleFile"
-      - "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/royaumeV4.json"
-      - "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
-      - "start-dev"
-    environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    volumes:
-      - ./data/REALM:/opt/jboss/keycloak/import
-    ports:
-      - 8080:8080
-    depends_on:
-      - keycloak-db
+    keycloak:
+      image: quay.io/keycloak/keycloak
+      command:
+        - "-Dkeycloak.migration.action=import"
+        - "-Dkeycloak.migration.provider=singleFile"
+        - "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/royaumeV4.json"
+        - "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+        - "start-dev"
+      environment:
+        DB_VENDOR: MYSQL
+        DB_ADDR: mysql
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+      volumes:
+        - ./data/REALM:/opt/jboss/keycloak/import
+      ports:
+        - 8080:8080
+      depends_on:
+        - keycloak-db
 
-  # Service Web-Portal
-  web-portal:
-    build:
-      context: .
-      dockerfile_inline: |
-        FROM php:apache
-        COPY ./Certificats/localhost.crt /etc/ssl/certs/localhost.crt
-        COPY ./Certificats/localhost.key /etc/ssl/private/localhost.key
+    # Service Web-Portal
+    web-portal:
+      build:
+        context: .
+        dockerfile_inline: |
+          FROM php:apache
+          COPY ./Certificats/localhost.crt /etc/ssl/certs/localhost.crt
+          COPY ./Certificats/localhost.key /etc/ssl/private/localhost.key
+  
+          COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+          COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
+          COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
+          
+          RUN apt-get update && apt-get install -y \
+                  git \
+                  zip \
+                  unzip \
+                  && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
+                  && service apache2 restart
+      entrypoint:
+        - /bin/bash
+        - -c
+        - |
+          rm -f /etc/apache2/sites-available/000-default.conf
+          apachectl -D FOREGROUND
+      container_name: web_portal_container
+      environment:
+        - LDAP_ADMIN_PASSWORD=$LDAP_ADMIN_PASSWORD
+        - DOMAINENIV1=$DOMAINENIV1
+        - DOMAINENIV2=$DOMAINENIV2
+      volumes:
+        - ./web-portal:/var/www/html
+        - ./Certificats/localhost.crt:/etc/ssl/certs/localhost.crt
+        - ./Certificats/localhost.key:/etc/ssl/private/localhost.key
+        - ./Config-SSL/default-ssl.configuration:/etc/apache2/sites-available/default-ssl.configuration
+        - ./Config-SSL/ports.configuration:/etc/apache2/ports.configuration
+        - ./Config-SSL/apache2.configuration:/etc/apache2/apache2.configuration
+      ports:
+        - "8443:443"
 
-        COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-        COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
-        COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
-        
-        RUN apt-get update && apt-get install -y \
-                git \
-                zip \
-                unzip \
-                && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
-                && service apache2 restart
-    entrypoint:
-      - /bin/bash
-      - -c
-      - |
-        rm -f /etc/apache2/sites-available/000-default.conf
-        apachectl -D FOREGROUND
-    container_name: ldap_web_portal_container
-    environment:
-      - LDAP_ADMIN_PASSWORD=$LDAP_ADMIN_PASSWORD
-      - DOMAINENIV1=$DOMAINENIV1
-      - DOMAINENIV2=$DOMAINENIV2
-    volumes:
-      - ./web-portal:/var/www/html
-      - ./Certificats/localhost.crt:/etc/ssl/certs/localhost.crt
-      - ./Certificats/localhost.key:/etc/ssl/private/localhost.key
-      - ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
-      - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
-      - ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
-    ports:
-      - "8443:443"
 
-  # Service Nextcloud
-  # BD
-  nextcloud_db:
-    image: mariadb
-    container_name: nextcloud_db
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    #volumes:
-    #  - ./data/nextcloud_db_data:/var/lib/mysql
+    # Service Nextcloud
+    # BD
+    nextcloud_db:
+      image: mariadb
+      container_name: nextcloud_db
+      restart: always
+      command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+      #volumes:
+      #  - ./data/nextcloud_db_data:/var/lib/mysql
+      volumes:
+        - nextcloud_db_data:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=$NEXTCLOUD_MYSQL_ROOT_PASSWORD
+        - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+        - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+        - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
 
-    volumes:
-      - nextcloud_db_data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=$NEXTCLOUD_MYSQL_ROOT_PASSWORD
-      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
-      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
-      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
+    nextcloud_app:
+      build:
+        context: .
+        dockerfile_inline: |
+          FROM nextcloud:latest
+      restart: always
+      ports:
+        - 9080:80
+      links:
+        - nextcloud_db
+      # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
+      #volumes:
+      #  - ./data/nextcloud_data:/var/www/html
+      #  - ./data/nextconfig:/config
+      volumes:
+        - nextcloud_data:/var/www/html
+        - nextconfig:/config
+      environment:
+        - NEXTCLOUD_ADMIN_USER=$NEXTCLOUD_ADMIN_USER
+        - NEXTCLOUD_ADMIN_PASSWORD=$NEXTCLOUD_ADMIN_PASSWORD
+        - MYSQL_HOST=nextcloud_db
+        - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+        - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+        - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
 
-  nextcloud_app:
-    build:
-      context: .
-      dockerfile_inline: |
-        FROM nextcloud:latest
-        RUN apt-get update && apt-get install -y \
-            libapache2-mod-auth-openidc \
-            && rm -rf /var/lib/apt/lists/*    container_name: nextcloud_app
-    restart: always
-    ports:
-      - 9080:80
-    links:
-      - nextcloud_db
-    # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
-    #volumes:
-    #  - ./data/nextcloud_data:/var/www/html
-    #  - ./data/nextconfig:/config
+    # Service RocketChat
+    rocketchat:
+      image: registry.rocket.chat/rocketchat/rocket.chat:${RELEASE:-latest}
+      restart: always
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.rocketchat.rule: Host(`${DOMAIN:-}`)
+        traefik.http.routers.rocketchat.tls: "true"
+        traefik.http.routers.rocketchat.entrypoints: https
+        traefik.http.routers.rocketchat.tls.certresolver: le
+      environment:
+        MONGO_URL: "${MONGO_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/${MONGODB_DATABASE:-rocketchat}?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
+        MONGO_OPLOG_URL: "${MONGO_OPLOG_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/local?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
+        ROOT_URL: ${ROOT_URL:-http://localhost:${HOST_PORT:-3000}}
+        PORT: ${PORT:-3000}
+        DEPLOY_METHOD: docker
+        DEPLOY_PLATFORM: ${DEPLOY_PLATFORM:-}
+        REG_TOKEN: ${REG_TOKEN:-}
 
-    volumes:
-      - nextcloud_data:/var/www/html
-      - nextconfig:/config
-    environment:
-      - NEXTCLOUD_ADMIN_USER=$NEXTCLOUD_ADMIN_USER
-      - NEXTCLOUD_ADMIN_PASSWORD=$NEXTCLOUD_ADMIN_PASSWORD
-      - MYSQL_HOST=nextcloud_db
-      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
-      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
-      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
+        # Keycloak OAuth settings
+        Accounts_OAuth_Custom_keycloak: "true"
+        Accounts_OAuth_Custom_keycloak_id: "rocket-chat-client"
+        Accounts_OAuth_Custom_keycloak_secret: "gKNfwdJZJDaS5oUWdVKynMDclYAa1vq9"
+        # URL du serveur Keycloak (Elle peut varié en fonction de l'installation)
+        # Pour tester en local il faut modifier le fichier hosts (C:\Windows\System32\drivers\etc) de votre machine et ajouter la ligne suivante :
+        # 127.0.0.1       keycloak
 
-  # Service RocketChat
-  rocketchat:
-    image: registry.rocket.chat/rocketchat/rocket.chat:${RELEASE:-latest}
-    restart: always
-    labels:
-      traefik.enable: "true"
-      traefik.http.routers.rocketchat.rule: Host(`${DOMAIN:-}`)
-      traefik.http.routers.rocketchat.tls: "true"
-      traefik.http.routers.rocketchat.entrypoints: https
-      traefik.http.routers.rocketchat.tls.certresolver: le
-    environment:
-      MONGO_URL: "${MONGO_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/${MONGODB_DATABASE:-rocketchat}?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
-      MONGO_OPLOG_URL: "${MONGO_OPLOG_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/local?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
-      ROOT_URL: ${ROOT_URL:-http://localhost:${HOST_PORT:-3000}}
-      PORT: ${PORT:-3000}
-      DEPLOY_METHOD: docker
-      DEPLOY_PLATFORM: ${DEPLOY_PLATFORM:-}
-      REG_TOKEN: ${REG_TOKEN:-}
+        # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
 
-      # Keycloak OAuth settings
-      Accounts_OAuth_Custom_keycloak: "true"
-      Accounts_OAuth_Custom_keycloak_id: "rocket-chat-client"
-      Accounts_OAuth_Custom_keycloak_secret: "gKNfwdJZJDaS5oUWdVKynMDclYAa1vq9"
-      # URL du serveur Keycloak (Elle peut varié en fonction de l'installation)
-      # Pour tester en local il faut modifier le fichier hosts (C:\Windows\System32\drivers\etc) de votre machine et ajouter la ligne suivante :
-      # 127.0.0.1       keycloak
+        # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
+        Accounts_OAuth_Custom_keycloak_url: "http://${ROCKET_CHAT_SERVER_IP}:${HOST_PORT:-8080}"
+        Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
+        Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
+        Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
+        Accounts_OAuth_Custom_keycloak_scope: "openid"
+        Accounts_OAuth_Custom_keycloak_access_token_param: "access_token"
+        Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec Keycloak miaou miaou"
+        Accounts_OAuth_Custom_keycloak_button_label_color: "#07F4F0"
+        Accounts_OAuth_Custom_keycloak_login_style: "redirect"
+        Accounts_OAuth_Custom_keycloak_button_color: "#13679A"
+        Accounts_OAuth_Custom_keycloak_token_sent_via: "payload"
+        Accounts_OAuth_Custom_keycloak_identity_token_sent_via: "header"
+        Accounts_OAuth_Custom_keycloak_key_field: "username"
+        Accounts_OAuth_Custom_keycloak_username_field: "preferred_username"
+        Accounts_OAuth_Custom_keycloak_name_field: "name"
+        Accounts_OAuth_Custom_keycloak_email_field: "email"
+        Accounts_OAuth_Custom_keycloak_roles_claim: ""
+        Accounts_OAuth_Custom_keycloak_groups_claim: ""
+        Accounts_OAuth_Custom_keycloak_groups_channel_map: ""
+        Accounts_OAuth_Custom_keycloak_channels_admin: "rocket.cat"
+        Accounts_OAuth_Custom_keycloak_merge_users: "true"
+        Accounts_OAuth_Custom_keycloak_map_channels: ""
+        Accounts_OAuth_Custom_keycloak_merge_roles: "false"
+        Accounts_OAuth_Custom_keycloak_show_button: "true"
+        Accounts_OAuth_Custom_keycloak_avatar_field: ""
+        #Supprimer la double authentification
+        Accounts_TwoFactorAuthentication_Enabled: "false"
+      depends_on:
+        - mongodb
+      expose:
+        - ${PORT:-3000}
+      ports:
+        - "${BIND_IP:-0.0.0.0}:${HOST_PORT:-3000}:${PORT:-3000}"
+    mongodb:
+      image: docker.io/bitnami/mongodb:${MONGODB_VERSION:-5.0}
+      restart: always
+      volumes:
+        - mongodb_data:/bitnami/mongodb
+      environment:
+        MONGODB_REPLICA_SET_MODE: primary
+        MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
+        MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
+        MONGODB_INITIAL_PRIMARY_HOST: ${MONGODB_INITIAL_PRIMARY_HOST:-mongodb}
+        MONGODB_INITIAL_PRIMARY_PORT_NUMBER: ${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}
+        MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
+        MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
+        ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
 
-      # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
 
-      # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
-      Accounts_OAuth_Custom_keycloak_url: "http://${ROCKET_CHAT_SERVER_IP}:${HOST_PORT:-8080}"
-      Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
-      Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
-      Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
-      Accounts_OAuth_Custom_keycloak_scope: "openid"
-      Accounts_OAuth_Custom_keycloak_access_token_param: "access_token"
-      Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec Keycloak miaou miaou"
-      Accounts_OAuth_Custom_keycloak_button_label_color: "#07F4F0"
-      Accounts_OAuth_Custom_keycloak_login_style: "redirect"
-      Accounts_OAuth_Custom_keycloak_button_color: "#13679A"
-      Accounts_OAuth_Custom_keycloak_token_sent_via: "payload"
-      Accounts_OAuth_Custom_keycloak_identity_token_sent_via: "header"
-      Accounts_OAuth_Custom_keycloak_key_field: "username"
-      Accounts_OAuth_Custom_keycloak_username_field: "preferred_username"
-      Accounts_OAuth_Custom_keycloak_name_field: "name"
-      Accounts_OAuth_Custom_keycloak_email_field: "email"
-      Accounts_OAuth_Custom_keycloak_roles_claim: ""
-      Accounts_OAuth_Custom_keycloak_groups_claim: ""
-      Accounts_OAuth_Custom_keycloak_groups_channel_map: ""
-      Accounts_OAuth_Custom_keycloak_channels_admin: "rocket.cat"
-      Accounts_OAuth_Custom_keycloak_merge_users: "true"
-      Accounts_OAuth_Custom_keycloak_map_channels: ""
-      Accounts_OAuth_Custom_keycloak_merge_roles: "false"
-      Accounts_OAuth_Custom_keycloak_show_button: "true"
-      Accounts_OAuth_Custom_keycloak_avatar_field: ""
-      #Supprimer la double authentification
-      Accounts_TwoFactorAuthentication_Enabled: "false"
-    depends_on:
-      - mongodb
-    expose:
-      - ${PORT:-3000}
-    ports:
-      - "${BIND_IP:-0.0.0.0}:${HOST_PORT:-3000}:${PORT:-3000}"
-  mongodb:
-    image: docker.io/bitnami/mongodb:${MONGODB_VERSION:-5.0}
-    restart: always
-    volumes:
-      - mongodb_data:/bitnami/mongodb
-    environment:
-      MONGODB_REPLICA_SET_MODE: primary
-      MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
-      MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
-      MONGODB_INITIAL_PRIMARY_HOST: ${MONGODB_INITIAL_PRIMARY_HOST:-mongodb}
-      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: ${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}
-      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
-      MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
-      ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
-volumes:
-  mysql-data:
-  nextcloud_db_data:
-  nextcloud_data:
-  nextconfig:
-  openproject_data:
+  volumes:
+    mysql-data:
+    nextcloud_db_data:
+    nextcloud_data:
+    nextconfig:
+    openproject_data:
 
-  mongodb_data: { driver: local }
+    mongodb_data: { driver: local }
