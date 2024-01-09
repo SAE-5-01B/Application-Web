@@ -106,12 +106,11 @@
         - ./web-portal:/var/www/html
         - ./Certificats/localhost.crt:/etc/ssl/certs/localhost.crt
         - ./Certificats/localhost.key:/etc/ssl/private/localhost.key
-        - ./Config-SSL/default-ssl.configuration:/etc/apache2/sites-available/default-ssl.configuration
-        - ./Config-SSL/ports.configuration:/etc/apache2/ports.configuration
-        - ./Config-SSL/apache2.configuration:/etc/apache2/apache2.configuration
+        - ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
+        - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
+        - ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
       ports:
         - "8443:443"
-
 
     # Service Nextcloud
     # BD
@@ -168,7 +167,7 @@
       environment:
         MONGO_URL: "${MONGO_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/${MONGODB_DATABASE:-rocketchat}?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
         MONGO_OPLOG_URL: "${MONGO_OPLOG_URL:-mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}/local?replicaSet=${MONGODB_REPLICA_SET_NAME:-rs0}}"
-        ROOT_URL: ${ROOT_URL:-http://localhost:${HOST_PORT:-3000}}
+        ROOT_URL: ${ROOT_URL:-http://${SERVER_IP}:${HOST_PORT:-3000}}
         PORT: ${PORT:-3000}
         DEPLOY_METHOD: docker
         DEPLOY_PLATFORM: ${DEPLOY_PLATFORM:-}
@@ -232,7 +231,6 @@
         MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
         MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
         ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
-
 
   volumes:
     mysql-data:
