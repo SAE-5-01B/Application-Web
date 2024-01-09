@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
 
         } else {
             // Redirection si non authentifié
-            window.location.replace("https://localhost:8443/index.html");
+            window.location.replace("https://172.23.169.58:8443/index.html");
         }
     });
     // Gérer le clic sur le bouton de déconnexion

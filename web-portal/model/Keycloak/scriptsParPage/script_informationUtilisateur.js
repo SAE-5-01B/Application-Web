@@ -20,7 +20,7 @@ window.addEventListener('load', () => {
             groupes.textContent = 'Groupes : ' + groupNames.join(', ');
         } else {
             // Redirection si non authentifié
-            window.location.replace("https://localhost:8443/index.html");
+            window.location.replace("https://172.23.169.58:8443/index.html");
         }
     });
     // Gérer le clic sur le bouton de déconnexion
@@ -32,11 +32,11 @@ window.addEventListener('load', () => {
 // Gérer le clic sur le bouton de changement de mot de passe (Redirection vers la page de changement de mot de passe)
 // Penser à authoriser la redirection vers la page de changement de mot de passe dans Keycloak
 document.getElementById("boutonChangementMDP").addEventListener("click", function() {
-    window.location.replace("http://localhost:8080/realms/CATS/protocol/openid-connect/auth?client_id=portal-cats&redirect_uri=https%3A%2F%2Flocalhost%3A8443%2Fview%2FUtilisateurs%2FinformationsUtilisateur.html&response_mode=fragment&response_type=code&scope=openid&nonce=e8f2162f-2d69-4ed5-b1fa-8931db645871&kc_action=UPDATE_PASSWORD&code_challenge=XbvFfVo7eZX4DJLtJITjMkOfICgQl4cOJy2AeF-vlIg&code_challenge_method=S256");
+    window.location.replace("http://172.23.169.58:8080/realms/CATS/protocol/openid-connect/auth?client_id=portal-cats&redirect_uri=https%3A%2F%2F172.23.169.58%3A8443%2Fview%2FUtilisateurs%2FinformationsUtilisateur.html&response_mode=fragment&response_type=code&scope=openid&nonce=e8f2162f-2d69-4ed5-b1fa-8931db645871&kc_action=UPDATE_PASSWORD&code_challenge=XbvFfVo7eZX4DJLtJITjMkOfICgQl4cOJy2AeF-vlIg&code_challenge_method=S256");
 });
 
 document.getElementById("boutonCompteKeycloak").addEventListener("click", function() {
-    window.location.replace("http://localhost:8080/realms/CATS/account/#/personal-info?client_id=portal-cats"); //Mettre le lien de redirection vers le compte Keycloak
+    window.location.replace("http://172.23.169.58:8080/realms/CATS/account/#/personal-info?client_id=portal-cats"); //Mettre le lien de redirection vers le compte Keycloak
 });
 
 

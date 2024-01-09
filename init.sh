@@ -6,6 +6,35 @@ server_ip=$(hostname -I | awk '{print $1}')
 # Affiche l'adresse IP récupérée
 echo "Adresse IP du serveur détectée : $server_ip"
 
+# Chemin vers le fichier template JSON et le fichier de destination
+json_template="./data/REALM/royaumeV4_Template.json"
+json_file="./data/REALM/royaumeV4.json"
+
+# Vérifie si le fichier template JSON existe
+if [ -f "$json_template" ]; then
+    # Copie le fichier template en fichier de destination
+    cp "$json_template" "$json_file"
+
+    # Remplace toutes les occurrences de SERVER_IP dans le fichier de destination
+    sed -i "s/SERVER_IP/$server_ip/g" "$json_file"
+    echo "Les occurrences de SERVER_IP dans $json_file ont été remplacées par $server_ip."
+else
+    echo "Le fichier template $json_template n'existe pas."
+    exit 1
+fi
+
+#-------------------------------------------------------------------------#
+
+# Chemin vers le fichier serverConfig.js dans le dossier web-portal
+config_js_file="./web-portal/serverConfig.js"
+
+# Écriture ou mise à jour de l'adresse IP dans serverConfig.js
+echo "const serverIp = \"$server_ip\";" > "$config_js_file"
+
+echo "Le fichier $config_js_file a été mis à jour avec l'adresse IP du serveur : $server_ip"
+
+
+
 # Chemin vers le fichier .env
 env_file="./.env"
 
@@ -25,7 +54,6 @@ else
 fi
 
 echo "Le fichier .env a été mis à jour avec l'adresse IP du serveur : $server_ip"
-
 
 # Lancement du docker-compose
 docker-compose up -d
