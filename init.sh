@@ -1,30 +1,31 @@
-#####################################
-# Script d'initialisation du projet #
-#####################################
+#!/bin/bash
 
-# Demande à l'utilisateur l'adresse IP du serveur pour Rocket.Chat
-read -p "Adresse IP du serveur Rocket.Chat (keycloak pour l'environnement de test sinon l'adresse IP du serveur) : " ipRocketChat
-echo "IP Rocket.Chat saisie : $ipRocketChat"
+# Récupère l'adresse IP principale de la machine
+server_ip=$(hostname -I | awk '{print $1}')
 
-# Demande à l'utilisateur l'adresse IP du serveur pour les autres services (Web, Nextcloud, RocketChat, Keycloak)
-read -p "Adresse IP du serveur pour les autres services (Web, Nextcloud, RocketChat, Keycloak) (soit localhost ou l'adresse IP du serveur) : " ipServeur
-echo "IP serveur saisie : $ipServeur"
+# Affiche l'adresse IP récupérée
+echo "Adresse IP du serveur détectée : $server_ip"
 
-# Lecture et modification du fichier .env
-while IFS= read -r line; do
-    # Modification de ROCKET_CHAT_SERVER_IP
-    if [[ "$line" == "ROCKET_CHAT_SERVER_IP="* ]]; then
-        echo "ROCKET_CHAT_SERVER_IP=$ipRocketChat"
-    # Modification de SERVER_IP
-    elif [[ "$line" == "SERVER_IP="* ]]; then
-        echo "SERVER_IP=$ipServeur"
-    else
-        echo "$line"
-    fi
-done < .env > .env.tmp
+# Chemin vers le fichier .env
+env_file="./.env"
 
-# Remplacement du fichier .env par le fichier temporaire modifié
-mv .env.tmp .env
+# Vérifie si le fichier .env existe
+if [ ! -f "$env_file" ]; then
+    echo "Le fichier .env n'existe pas au chemin spécifié."
+    exit 1
+fi
+
+# Vérifie si la variable SERVER_IP existe déjà dans le fichier .env
+if grep -q "SERVER_IP=" "$env_file"; then
+    # Remplace la valeur existante
+    sed -i "s/^SERVER_IP=.*/SERVER_IP=$server_ip/" "$env_file"
+else
+    # Ajoute la variable SERVER_IP à la fin du fichier si elle n'existe pas
+    echo "SERVER_IP=$server_ip" >> "$env_file"
+fi
+
+echo "Le fichier .env a été mis à jour avec l'adresse IP du serveur : $server_ip"
+
 
 # Lancement du docker-compose
 docker-compose up -d
