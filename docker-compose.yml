@@ -133,7 +133,7 @@
       build:
         context: .
         dockerfile_inline: |
-          FROM nextcloud:latest
+          FROM nextcloud:25.0.13
       restart: always
       ports:
         - 9080:80
@@ -142,10 +142,10 @@
       # Volume pour la persistance des données linux car wsl2 ne supporte pas les volumes locaux
       #volumes:
       #  - ./data/nextcloud_data:/var/www/html
-      #  - ./data/nextconfig:/config
+      #  - ./data/nextconfig:/var/www/html/config
       volumes:
         - nextcloud_data:/var/www/html
-        - nextconfig:/config
+        - nextcloud_config:/var/www/html/config
       environment:
         - NEXTCLOUD_ADMIN_USER=$NEXTCLOUD_ADMIN_USER
         - NEXTCLOUD_ADMIN_PASSWORD=$NEXTCLOUD_ADMIN_PASSWORD
@@ -236,7 +236,7 @@
     mysql-data:
     nextcloud_db_data:
     nextcloud_data:
-    nextconfig:
+    nextcloud_config:
     openproject_data:
 
     mongodb_data: { driver: local }
