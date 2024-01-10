@@ -78,25 +78,27 @@
         context: .
         dockerfile_inline: |
           FROM php:apache
-          COPY ./Certificats/localhost.crt /etc/ssl/certs/localhost.crt
-          COPY ./Certificats/localhost.key /etc/ssl/private/localhost.key
-  
-          COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
           COPY ./Config-SSL/ports.conf /etc/apache2/ports.conf
-          COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
-          
-          RUN apt-get update && apt-get install -y \
-                  git \
-                  zip \
-                  unzip \
-                  && a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
-                  && service apache2 restart
-      entrypoint:
-        - /bin/bash
-        - -c
-        - |
-          rm -f /etc/apache2/sites-available/000-default.conf
-          apachectl -D FOREGROUND
+
+      #COPY ./Certificats/localhost.crt /etc/ssl/certs/localhost.crt
+      #COPY ./Certificats/localhost.key /etc/ssl/private/localhost.key
+
+      #COPY ./Config-SSL/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+      #COPY ./Config-SSL/apache2.conf /etc/apache2/apache2.conf
+
+      #RUN apt-get update && apt-get install -y \
+      #git \
+      #zip \
+      #unzip \
+      #&& a2enmod ssl && a2ensite default-ssl && a2enmod rewrite && a2enmod socache_shmcb \
+      #&& service apache2 restart
+      #entrypoint:
+      #  - /bin/bash
+      #  - -c
+      #  - |
+      #    rm -f /etc/apache2/sites-available/000-default.conf
+      #    apachectl -D FOREGROUND
+
       container_name: web_portal_container
       environment:
         - LDAP_ADMIN_PASSWORD=$LDAP_ADMIN_PASSWORD
@@ -105,13 +107,14 @@
         - IP_SERVER=$SERVER_IP
       volumes:
         - ./web-portal:/var/www/html
-        - ./Certificats/localhost.crt:/etc/ssl/certs/localhost.crt
-        - ./Certificats/localhost.key:/etc/ssl/private/localhost.key
-        - ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
+        #- ./Certificats/localhost.crt:/etc/ssl/certs/localhost.crt
+        #- ./Certificats/localhost.key:/etc/ssl/private/localhost.key
+        #- ./Config-SSL/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
         - ./Config-SSL/ports.conf:/etc/apache2/ports.conf
-        - ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
+        #- ./Config-SSL/apache2.conf:/etc/apache2/apache2.conf
       ports:
         - "8443:443"
+        - "8888:80"
 
     # Service Nextcloud
     # BD

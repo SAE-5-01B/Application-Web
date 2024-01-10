@@ -17,7 +17,7 @@ if [ -f "$json_template" ]; then
 
     # Remplace toutes les occurrences de SERVER_IP dans le fichier de destination
     sed -i "s/SERVER_IP/$server_ip/g" "$json_file"
-    echo "Les occurrences de SERVER_IP dans $json_file ont été remplacées par $server_ip."
+    echo "Les occurrences de SERVER_IP dans $json_file ont été remplacées par $server_ip"
 else
     echo "Le fichier template $json_template n'existe pas."
     exit 1
@@ -32,8 +32,6 @@ config_js_file="./web-portal/serverConfig.js"
 echo "const serverIp = \"$server_ip\";" > "$config_js_file"
 
 echo "Le fichier $config_js_file a été mis à jour avec l'adresse IP du serveur : $server_ip"
-
-
 
 # Chemin vers le fichier .env
 env_file="./.env"
