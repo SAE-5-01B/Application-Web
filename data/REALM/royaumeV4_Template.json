@@ -823,10 +823,10 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://SERVER_IP:8443/*"
+        "https://SERVER_IP:8888/*"
       ],
       "webOrigins": [
-        "https://SERVER_IP:8443"
+        "https://SERVER_IP:8888"
       ],
       "notBefore": 0,
       "bearerOnly": false,
