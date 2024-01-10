@@ -188,7 +188,7 @@
         # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
 
         # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
-        Accounts_OAuth_Custom_keycloak_url: "http://${SERVER_IP}:${HOST_PORT:-8080}"
+        Accounts_OAuth_Custom_keycloak_url: http://${SERVER_IP}:${HOST_PORT:-8080}
         Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
         Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
         Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
@@ -215,6 +215,9 @@
         Accounts_OAuth_Custom_keycloak_avatar_field: ""
         #Supprimer la double authentification
         Accounts_TwoFactorAuthentication_Enabled: "false"
+
+        ADMIN_USERNAME: $ADMIN_USERNAMEROCKETCHAT
+        ADMIN_PASS: $ADMIN_PASSROCKETCHAT
       depends_on:
         - mongodb
       expose:
