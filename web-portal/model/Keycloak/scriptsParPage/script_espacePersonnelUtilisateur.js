@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
             }
             const linkRocketChat = document.getElementById('linkRocketChat');
             if (linkRocketChat) {
-                linkRocketChat.href = `http://${serverIp}:3000`;
+                linkRocketChat.href = `http://${serverIp}:3000/home`;
             }
 
         } else {
