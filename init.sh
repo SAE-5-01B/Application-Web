@@ -54,4 +54,4 @@ fi
 echo "Le fichier .env a été mis à jour avec l'adresse IP du serveur : $server_ip"
 
 # Lancement du docker-compose
-docker-compose up -d
+docker compose up -d

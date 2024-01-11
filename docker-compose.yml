@@ -187,13 +187,13 @@
         # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
 
         # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
-        Accounts_OAuth_Custom_keycloak_url: http://${SERVER_IP}:${HOST_PORT:-8080}
+        Accounts_OAuth_Custom_keycloak_url: "http://${SERVER_IP}:${HOST_PORT:-8080}"
         Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
         Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
         Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
         Accounts_OAuth_Custom_keycloak_scope: "openid"
         Accounts_OAuth_Custom_keycloak_access_token_param: "access_token"
-        Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec Keycloak miaou miaou"
+        Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec Keycloak"
         Accounts_OAuth_Custom_keycloak_button_label_color: "#07F4F0"
         Accounts_OAuth_Custom_keycloak_login_style: "redirect"
         Accounts_OAuth_Custom_keycloak_button_color: "#13679A"
