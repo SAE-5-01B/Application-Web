@@ -20,7 +20,7 @@ window.addEventListener('load', () => {
 
             const linkNextCloud = document.getElementById('linkNextCloud');
             if (linkNextCloud) {
-                linkNextCloud.href = `http://${serverIp}:9080`;
+                linkNextCloud.href = `http://${serverIp}:9080/apps/dashboard/`;
             }
             const linkRocketChat = document.getElementById('linkRocketChat');
             if (linkRocketChat) {
