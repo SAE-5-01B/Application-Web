@@ -33,7 +33,7 @@
       depends_on:
         - ldap-server
 
-    # Service Keycloak
+    # Service keycloak
     keycloak-db:
       image: mysql:5.7
 
@@ -146,24 +146,24 @@
         DEPLOY_PLATFORM: ${DEPLOY_PLATFORM:-}
         REG_TOKEN: ${REG_TOKEN:-}
 
-        # Keycloak OAuth settings
+        # keycloak OAuth settings
         Accounts_OAuth_Custom_keycloak: "true"
         Accounts_OAuth_Custom_keycloak_id: "rocket-chat-client"
         Accounts_OAuth_Custom_keycloak_secret: "gKNfwdJZJDaS5oUWdVKynMDclYAa1vq9"
-        # URL du serveur Keycloak (Elle peut varié en fonction de l'installation)
+        # URL du serveur keycloak (Elle peut varié en fonction de l'installation)
         # Pour tester en local il faut modifier le fichier hosts (C:\Windows\System32\drivers\etc) de votre machine et ajouter la ligne suivante :
         # 127.0.0.1       keycloak
 
-        # Dans un environnement de production il faut mettre l'adresse IP du serveur Keycloak.
+        # Dans un environnement de production il faut mettre l'adresse IP du serveur keycloak.
 
-        # NOTE : Les utilisateurs Keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
+        # NOTE : Les utilisateurs keycloak doivent obligatoirement avoir un email et un nom d'utilisateur.
         Accounts_OAuth_Custom_keycloak_url: "http://${SERVER_IP}:${HOST_PORT:-8080}"
         Accounts_OAuth_Custom_keycloak_token_path: "/realms/CATS/protocol/openid-connect/token"
         Accounts_OAuth_Custom_keycloak_identity_path: "/realms/CATS/protocol/openid-connect/userinfo"
         Accounts_OAuth_Custom_keycloak_authorize_path: "/realms/CATS/protocol/openid-connect/auth"
         Accounts_OAuth_Custom_keycloak_scope: "openid"
         Accounts_OAuth_Custom_keycloak_access_token_param: "access_token"
-        Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec Keycloak"
+        Accounts_OAuth_Custom_keycloak_button_label_text: "Connect avec keycloak"
         Accounts_OAuth_Custom_keycloak_button_label_color: "#07F4F0"
         Accounts_OAuth_Custom_keycloak_login_style: "redirect"
         Accounts_OAuth_Custom_keycloak_button_color: "#13679A"
